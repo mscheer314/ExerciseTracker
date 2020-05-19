@@ -6,11 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.android.exercisetracker.models.Exercise
 import com.example.android.exercisetracker.R
+import com.example.android.exercisetracker.models.Exercise
 
 class ExerciseAdapter internal constructor(context: Context) :
     RecyclerView.Adapter<ExerciseAdapter.ViewHolder>() {
+
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var exercises: List<Exercise> = emptyList<Exercise>()
 
