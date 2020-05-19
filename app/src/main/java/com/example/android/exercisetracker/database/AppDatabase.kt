@@ -1,10 +1,12 @@
-package com.example.android.exercisetracker
+package com.example.android.exercisetracker.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.android.exercisetracker.daos.ExerciseDao
+import com.example.android.exercisetracker.models.Exercise
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -24,9 +26,21 @@ abstract class AppDatabase : RoomDatabase() {
                     exerciseDao.deleteAll()
 
                     //sample exercises
-                    var exercise = Exercise(10, "Burpees", "Full Body")
+                    var exercise =
+                        Exercise(
+                            10,
+                            "Burpees",
+                            "Full Body",
+                            null
+                        )
                     exerciseDao.insert(exercise)
-                    exercise = Exercise(11, "Dive Bombers", "Shoulders")
+                    exercise =
+                        Exercise(
+                            11,
+                            "Dive Bombers",
+                            "Shoulders",
+                            null
+                        )
                     exerciseDao.insert(exercise)
                 }
             }
@@ -42,13 +56,18 @@ abstract class AppDatabase : RoomDatabase() {
         fun getDatabase(
             context: Context, scope: CoroutineScope
         ): AppDatabase {
-            return INSTANCE ?: synchronized(this) {
+            return INSTANCE
+                ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
                     "app_database"
                 )
-                    .addCallback(AppDatabaseCallback(scope))
+                    .addCallback(
+                        AppDatabaseCallback(
+                            scope
+                        )
+                    )
                     .build()
                 INSTANCE = instance
                 instance

@@ -1,4 +1,4 @@
-package com.example.android.exercisetracker
+package com.example.android.exercisetracker.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -8,5 +8,6 @@ data class Exercise(
     @PrimaryKey(autoGenerate = true)
     val exerciseId: Int,
     val exerciseName: String,
-    val exerciseBodyType: String
+    val exerciseBodyType: String,
+    val routineId: Int?
 )

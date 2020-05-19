@@ -1,4 +1,4 @@
-package com.example.android.exercisetracker
+package com.example.android.exercisetracker.fragments
 
 import android.content.Context
 import android.os.Bundle
@@ -11,6 +11,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.android.exercisetracker.R
+import com.example.android.exercisetracker.adapters.ExerciseAdapter
+import com.example.android.exercisetracker.models.Exercise
+import com.example.android.exercisetracker.viewmodels.ExerciseViewModel
 
 /**
  * A simple [Fragment] subclass.
@@ -39,7 +43,8 @@ class ExerciseFragment : Fragment() {
             layoutManager = LinearLayoutManager(activity)
             adapter = ExerciseAdapter(context)
         }*/
-        val adapter = ExerciseAdapter(activity)
+        val adapter =
+            ExerciseAdapter(activity)
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.adapter = adapter
         exerciseViewModel = ViewModelProvider(this).get(ExerciseViewModel::class.java)
@@ -49,7 +54,12 @@ class ExerciseFragment : Fragment() {
 
         val button: Button = view.findViewById(R.id.buttonAddExercise)
         button.setOnClickListener {
-            val exercise = Exercise(1, "push up", "chest")
+            val exercise = Exercise(
+                1,
+                "push up",
+                "chest",
+                null
+            )
             exerciseViewModel.insert(exercise)
         }
         return view
