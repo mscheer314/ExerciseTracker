@@ -7,13 +7,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.exercisetracker.R
-import com.example.android.exercisetracker.models.WorkoutRoutine
+import com.example.android.exercisetracker.models.Routine
 
-class WorkoutRoutineAdapter internal constructor(context: Context) :
-    RecyclerView.Adapter<WorkoutRoutineAdapter.ViewHolder>() {
+class RoutineAdapter internal constructor(context: Context) :
+    RecyclerView.Adapter<RoutineAdapter.ViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-    private var routines: List<WorkoutRoutine> = emptyList()
+    private var routines: List<Routine> = emptyList()
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val routineName: TextView = itemView.findViewById(R.id.routine_title)
@@ -30,11 +30,11 @@ class WorkoutRoutineAdapter internal constructor(context: Context) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val current = routines[position]
-        holder.routineName.text = current.workoutRoutineName
+        holder.routineName.text = current.routineName
     }
 
-    fun setWorkoutRoutines(workoutRoutines: List<WorkoutRoutine>) {
-        this.routines = workoutRoutines
+    fun setWorkoutRoutines(routines: List<Routine>) {
+        this.routines = routines
         notifyDataSetChanged()
     }
 

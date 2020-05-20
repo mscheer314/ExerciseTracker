@@ -6,14 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.exercisetracker.R
-import com.example.android.exercisetracker.adapters.WorkoutRoutineAdapter
-import com.example.android.exercisetracker.viewmodels.WorkoutRoutineViewModel
+import com.example.android.exercisetracker.adapters.RoutineAdapter
+import com.example.android.exercisetracker.viewmodels.RoutineViewModel
 
 class StartWorkoutFragment: Fragment() {
-    private lateinit var workoutRoutineViewModel: WorkoutRoutineViewModel
+    private lateinit var routineViewModel: RoutineViewModel
 
     companion object {
         fun newInstance(): StartWorkoutFragment {
@@ -30,8 +30,8 @@ class StartWorkoutFragment: Fragment() {
         val activity = activity as Context
 
         val recyclerView: RecyclerView = view.findViewById(R.id.rv_routines)
-        val adapter = WorkoutRoutineAdapter(activity)
-        recyclerView.layoutManager = LinearLayoutManager(activity)
+        val adapter = RoutineAdapter(activity)
+        recyclerView.layoutManager = GridLayoutManager(activity, 2)
         recyclerView.adapter = adapter
 
         return view

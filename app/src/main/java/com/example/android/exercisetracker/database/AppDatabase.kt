@@ -6,14 +6,19 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.android.exercisetracker.daos.ExerciseDao
+import com.example.android.exercisetracker.daos.RoutineDao
 import com.example.android.exercisetracker.models.Exercise
+import com.example.android.exercisetracker.models.Routine
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@Database(entities = arrayOf(Exercise::class), version = 1, exportSchema = false)
+@Database(entities = arrayOf(Exercise::class, Routine::class), version = 1, exportSchema = false)
+
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun exerciseDao(): ExerciseDao
+
+    abstract fun routineDao(): RoutineDao
 
     private class AppDatabaseCallback(
         private val scope: CoroutineScope
