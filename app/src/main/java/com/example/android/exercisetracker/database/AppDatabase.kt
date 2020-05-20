@@ -17,7 +17,6 @@ import kotlinx.coroutines.launch
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun exerciseDao(): ExerciseDao
-
     abstract fun routineDao(): RoutineDao
 
     private class AppDatabaseCallback(
@@ -58,25 +57,20 @@ abstract class AppDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
-        fun getDatabase(
-            context: Context, scope: CoroutineScope
-        ): AppDatabase {
-            return INSTANCE
-                ?: synchronized(this) {
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    AppDatabase::class.java,
-                    "app_database"
-                )
-                    .addCallback(
-                        AppDatabaseCallback(
-                            scope
+        fun getDatabase(context: Context): AppDatabase? {
+            if (INSTANCE == null) {
+                synchronized(AppDatabase::class.java) {
+                    if (INSTANCE == null) {
+                        INSTANCE = Room.databaseBuilder(
+                            context.applicationContext,
+                            AppDatabase::class.java,
+                            "app_database"
                         )
-                    )
-                    .build()
-                INSTANCE = instance
-                instance
+                            .build()
+                    }
+                }
             }
+            return INSTANCE
         }
     }
 }

@@ -33,7 +33,7 @@ class RoutineAdapter internal constructor(context: Context) :
         holder.routineName.text = current.routineName
     }
 
-    fun setWorkoutRoutines(routines: List<Routine>) {
+    fun setRoutines(routines: List<Routine>) {
         this.routines = routines
         notifyDataSetChanged()
     }
