@@ -14,5 +14,14 @@
         android:id="@+id/navigation_start_workout"
         android:name="com.example.android.exercisetracker.fragments.StartWorkoutFragment"
         android:label="fragment_start_workout"
-        tools:layout="@layout/fragment_start_workout" />
+        tools:layout="@layout/fragment_start_workout">
+        <action
+            android:id="@+id/action_navigation_start_workout_to_navigation_add_routine"
+            app:destination="@id/navigation_add_routine" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_add_routine"
+        android:name="com.example.android.exercisetracker.fragments.AddRoutineFragment"
+        android:label="fragment_add_routine"
+        tools:layout="@layout/fragment_add_routine" />
 </navigation>

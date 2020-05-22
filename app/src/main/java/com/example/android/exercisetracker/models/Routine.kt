@@ -6,7 +6,9 @@ import androidx.room.PrimaryKey
 @Entity(
     tableName = "routine_table")
 data class Routine(
+    var routineName: String,
+    var routineExercises: String
+) {
     @PrimaryKey(autoGenerate = true)
-    val routineId: Int,
-    val routineName: String
-)
+    var routineId: Int? = null
+}
