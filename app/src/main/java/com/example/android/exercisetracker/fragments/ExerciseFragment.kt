@@ -58,6 +58,21 @@ class ExerciseFragment : Fragment() {
             )
             exerciseViewModel.insert(exercise)
         }
+        var exercise1 = Exercise(
+            2,
+            "kettlebell swing",
+            "back",
+            null
+        )
+        exerciseViewModel.insert(exercise1)
+
+        exercise1 = Exercise(
+            3,
+            "Get Up",
+            "whole body",
+            null
+        )
+        exerciseViewModel.insert(exercise1)
         return view
     }
 }
