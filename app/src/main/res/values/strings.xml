@@ -10,4 +10,6 @@
     <string name="quick_start">Quick Start</string>
     <string name="routines">Routines</string>
     <string name="add_routine">Add Routine</string>
+    <string name="body_part">Body Part</string>
+    <string name="add_name">Add Name</string>
 </resources>

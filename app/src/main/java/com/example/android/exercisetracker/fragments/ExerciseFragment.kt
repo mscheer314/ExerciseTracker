@@ -50,16 +50,13 @@ class ExerciseFragment : Fragment() {
 
         val button: Button = view.findViewById(R.id.buttonAddExercise)
         button.setOnClickListener {
-            val exercise = Exercise(
-                1,
-                "push up",
-                "chest",
-                null
-            )
-            exerciseViewModel.insert(exercise)
+            val dialogFragment = AddExerciseDialog()
+            fragmentManager?.let { it1 -> dialogFragment.show(it1, "AddExerciseDialog") }
         }
+
+        // sample data
         var exercise1 = Exercise(
-            2,
+            0,
             "kettlebell swing",
             "back",
             null
@@ -67,12 +64,14 @@ class ExerciseFragment : Fragment() {
         exerciseViewModel.insert(exercise1)
 
         exercise1 = Exercise(
-            3,
+            0,
             "Get Up",
             "whole body",
             null
         )
         exerciseViewModel.insert(exercise1)
+
+
         return view
     }
 }
