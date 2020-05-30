@@ -33,7 +33,7 @@ class ExerciseAdapter internal constructor(context: Context) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val current = exercises[position]
         holder.exerciseTitle.text = current.exerciseName
-        holder.exerciseArea.text = current.exerciseBodyType
+        // holder.exerciseArea.text = current.exerciseBodyType
 
         holder.itemView.setOnClickListener {
             Toast.makeText(

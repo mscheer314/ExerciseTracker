@@ -16,6 +16,7 @@
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:autofillHints="Exercise"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner

@@ -4,20 +4,35 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.android.exercisetracker.daos.BodyTypeDao
 import com.example.android.exercisetracker.daos.ExerciseDao
 import com.example.android.exercisetracker.daos.RoutineDao
-import com.example.android.exercisetracker.models.Exercise
-import com.example.android.exercisetracker.models.Routine
+import com.example.android.exercisetracker.models.*
+import com.example.android.exercisetracker.models.Set
+import com.example.android.exercisetracker.utils.Converters
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@Database(entities = arrayOf(Exercise::class, Routine::class), version = 1, exportSchema = false)
+@Database(
+    entities = arrayOf(
+        Workout::class,
+        Routine::class,
+        Exercise::class,
+        Set::class,
+        BodyType::class
+    ),
+    version = 1,
+    exportSchema = false
+)
+@TypeConverters(Converters::class)
 
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun exerciseDao(): ExerciseDao
     abstract fun routineDao(): RoutineDao
+    abstract fun bodyTypeDao(): BodyTypeDao
 
     private class AppDatabaseCallback(
         private val scope: CoroutineScope
@@ -27,25 +42,7 @@ abstract class AppDatabase : RoomDatabase() {
             INSTANCE?.let { appDatabase ->
                 scope.launch {
                     val exerciseDao = appDatabase.exerciseDao()
-                    exerciseDao.deleteAll()
-
-                    //sample exercises
-                    var exercise =
-                        Exercise(
-                            10,
-                            "Burpees",
-                            "Full Body",
-                            null
-                        )
-                    exerciseDao.insert(exercise)
-                    exercise =
-                        Exercise(
-                            11,
-                            "Dive Bombers",
-                            "Shoulders",
-                            null
-                        )
-                    exerciseDao.insert(exercise)
+                    val bodyTypeDao = appDatabase.bodyTypeDao()
                 }
             }
         }
@@ -57,20 +54,20 @@ abstract class AppDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
-        fun getDatabase(context: Context): AppDatabase? {
-            if (INSTANCE == null) {
-                synchronized(AppDatabase::class.java) {
-                    if (INSTANCE == null) {
-                        INSTANCE = Room.databaseBuilder(
-                            context.applicationContext,
-                            AppDatabase::class.java,
-                            "app_database"
-                        )
-                            .build()
-                    }
-                }
+        fun getDatabase(context: Context): AppDatabase {
+            val tempInstance = INSTANCE
+            if (tempInstance != null) {
+                return tempInstance
             }
-            return INSTANCE
+            synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    AppDatabase::class.java,
+                    "app_database"
+                ).build()
+                INSTANCE = instance
+                return instance
+            }
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.example.android.exercisetracker.daos
 
-import android.app.LauncherActivity
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
@@ -13,12 +12,11 @@ interface ExerciseDao {
     @Query("SELECT * from exercise_table ORDER BY exerciseId ASC")
     fun getAllExercises(): LiveData<List<Exercise>>
 
-    @Query("SELECT * FROM exercise_table WHERE routineId = :routineId")
-    fun getAllExercisesByRoutineId(routineId: Int): LiveData<List<Exercise>>
-
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(exercise: Exercise)
+    fun insert(exercise: Exercise)
 
     @Query("DELETE FROM exercise_table")
-    suspend fun deleteAll()
+    fun deleteAll()
+
+    // @Query("SELECT exerciseId, exerciseName, ExerciseInRoutine.routineId, Routine.*")
 }

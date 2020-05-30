@@ -59,6 +59,8 @@ class AddRoutineFragment : Fragment() {
 
         adapter.tracker = tracker
 
+       
+
         return view
     }
 }
