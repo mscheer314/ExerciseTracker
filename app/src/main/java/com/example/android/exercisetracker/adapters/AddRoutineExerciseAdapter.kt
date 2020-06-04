@@ -24,7 +24,7 @@ class AddRoutineExerciseAdapter internal constructor(context: Context) :
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val exerciseTitle: TextView = itemView.findViewById(R.id.exercise_title)
-        val exerciseArea: TextView = itemView.findViewById(R.id.exercise_area)
+        //val exerciseArea: TextView = itemView.findViewById(R.id.exercise_area)
 
         fun getItemDetails(): ItemDetailsLookup.ItemDetails<Long> =
             object : ItemDetailsLookup.ItemDetails<Long>() {
@@ -58,14 +58,6 @@ class AddRoutineExerciseAdapter internal constructor(context: Context) :
                 it.isSelected(position.toLong())
             )
         }
-        /*holder.itemView.setOnClickListener {
-        Toast.makeText(
-            holder.exerciseTitle.context,
-            "In Add Routine",
-            Toast.LENGTH_LONG
-        ).show()
-    }*/
-
     }
 
     override fun getItemId(position: Int): Long = position.toLong()
