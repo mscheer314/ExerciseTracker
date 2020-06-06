@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -43,15 +42,6 @@ class StartWorkoutFragment : Fragment() {
         routineViewModel.allRoutines.observe(viewLifecycleOwner, Observer { routines ->
             routines?.let { adapter.setRoutines(it) }
         })
-
-        var routineTitle: TextView = view.findViewById(R.id.routineTitleTextView)
-        var routineExercises: TextView = view.findViewById(R.id.RoutineExercisesTextView)
-
-        /* val button: Button = view.findViewById(R.id.buttonAddRoutine)
-         button.setOnClickListener {
-             val routine = Routine(routineTitle.text.toString(), routineExercises.text.toString())
-             routineViewModel.insert(routine)
-         }*/
 
         val button: Button = view.findViewById(R.id.buttonAddRoutine)
         button.setOnClickListener {
