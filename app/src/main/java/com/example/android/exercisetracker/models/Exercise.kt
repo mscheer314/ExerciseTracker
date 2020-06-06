@@ -15,5 +15,6 @@ import androidx.room.PrimaryKey
 data class Exercise(
     @PrimaryKey(autoGenerate = true)
     val exerciseId: Long,
-    val exerciseName: String
+    val exerciseName: String,
+    val routineId: Long?
 )
