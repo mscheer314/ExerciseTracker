@@ -59,13 +59,23 @@ class AddRoutineFragment : Fragment(), CoroutineScope {
         val routineTitleEditText = view.findViewById<EditText>(R.id.routineTitleEditText)
         val addRoutineSaveButton = view.findViewById<Button>(R.id.addRoutineSaveButton)
         val adapter = AddRoutineExerciseAdapter(activity)
+
+        setUpSaveButton(addRoutineSaveButton, routineTitleEditText, adapter, view)
+        setUpRecyclerView(recyclerView, activity, adapter)
+        setUpTracker(recyclerView, adapter)
+
+        return view
+    }
+
+    private fun setUpSaveButton(
+        addRoutineSaveButton: Button,
+        routineTitleEditText: EditText,
+        adapter: AddRoutineExerciseAdapter,
+        view: View
+    ) {
         addRoutineSaveButton.setOnClickListener {
             if (routineTitleEditText.text.isEmpty()) {
-                Toast.makeText(
-                    getActivity(),
-                    "Please enter a routine title",
-                    Toast.LENGTH_SHORT
-                ).show()
+                showErrorMessage()
             } else {
                 routineViewModel = ViewModelProvider(this).get(RoutineViewModel::class.java)
                 exerciseRoutineJoinViewModel =
@@ -73,40 +83,56 @@ class AddRoutineFragment : Fragment(), CoroutineScope {
 
                 val title = routineTitleEditText.text.toString()
                 val routine = Routine(0, title)
-                var selectedExercises = tracker?.selection?.map { it.toInt() }?.toMutableList()
+                val selectedExercises = getSelectedExercises()
                 if (selectedExercises != null) {
                     for (i in selectedExercises.indices) {
                         selectedExercises[i] =
                             adapter.getExerciseIdFromSelectionId(selectedExercises[i])
                     }
                     launch {
-                        routineId = routineViewModel.insert(routine)
-                        selectedExercises.forEach {
-                            val exerciseRoutineJoin =
-                                routineId?.toLong()?.let { it1 ->
-                                    ExerciseRoutineJoin(
-                                        it.toLong(),
-                                        it1
-                                    )
-                                }
-                            if (exerciseRoutineJoin != null) {
-                                exerciseRoutineJoinViewModel.insert(exerciseRoutineJoin)
-                            }
-                        }
+                        insertRoutineToDatabase(routine)
+                        insertExerciseRoutineJoinsToDatabase(selectedExercises)
                     }
                 }
-                context?.let { it1 -> Keyboard.hideSoftKeyBoard(it1, view) }
-
-
+                closeKeyboard(view)
             }
             view.findNavController().navigate(R.id.navigation_start_workout)
         }
+    }
 
-        setUpRecyclerView(recyclerView, activity, adapter)
-        setUpTracker(recyclerView, adapter)
+    private fun getSelectedExercises(): MutableList<Int>? {
+        return tracker?.selection?.map { it.toInt() }?.toMutableList()
+    }
 
+    private fun insertExerciseRoutineJoinsToDatabase(selectedExercises: MutableList<Int>) {
+        selectedExercises.forEach {
+            val exerciseRoutineJoin =
+                routineId?.toLong()?.let { it1 ->
+                    ExerciseRoutineJoin(
+                        it.toLong(),
+                        it1
+                    )
+                }
+            if (exerciseRoutineJoin != null) {
+                exerciseRoutineJoinViewModel.insert(exerciseRoutineJoin)
+            }
+        }
+    }
 
-        return view
+    private suspend fun insertRoutineToDatabase(routine: Routine) {
+        routineId = routineViewModel.insert(routine)
+    }
+
+    private fun showErrorMessage() {
+        Toast.makeText(
+            activity,
+            "Please enter a routine title",
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
+    private fun closeKeyboard(view: View) {
+        context?.let { it1 -> Keyboard.hideSoftKeyBoard(it1, view) }
     }
 
     private fun setUpRecyclerView(
