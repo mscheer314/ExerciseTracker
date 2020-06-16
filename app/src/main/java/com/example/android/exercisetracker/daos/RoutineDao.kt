@@ -11,5 +11,5 @@ interface RoutineDao {
     fun getRoutines(): LiveData<List<Routine>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(routine: Routine)
+    suspend fun insert(routine: Routine): Long
 }

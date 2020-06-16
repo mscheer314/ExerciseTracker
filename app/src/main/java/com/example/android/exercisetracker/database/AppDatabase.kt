@@ -8,6 +8,7 @@ import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.android.exercisetracker.daos.BodyTypeDao
 import com.example.android.exercisetracker.daos.ExerciseDao
+import com.example.android.exercisetracker.daos.ExerciseRoutineJoinDao
 import com.example.android.exercisetracker.daos.RoutineDao
 import com.example.android.exercisetracker.models.*
 import com.example.android.exercisetracker.models.Set
@@ -21,7 +22,8 @@ import kotlinx.coroutines.launch
         Routine::class,
         Exercise::class,
         Set::class,
-        BodyType::class
+        BodyType::class,
+        ExerciseRoutineJoin::class
     ),
     version = 1,
     exportSchema = false
@@ -33,6 +35,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun exerciseDao(): ExerciseDao
     abstract fun routineDao(): RoutineDao
     abstract fun bodyTypeDao(): BodyTypeDao
+    abstract fun exerciseRoutineJoinDao(): ExerciseRoutineJoinDao
 
     private class AppDatabaseCallback(
         private val scope: CoroutineScope
@@ -43,6 +46,7 @@ abstract class AppDatabase : RoomDatabase() {
                 scope.launch {
                     val exerciseDao = appDatabase.exerciseDao()
                     val bodyTypeDao = appDatabase.bodyTypeDao()
+                    val exerciseRoutineJoinDao = appDatabase.exerciseRoutineJoinDao()
                 }
             }
         }

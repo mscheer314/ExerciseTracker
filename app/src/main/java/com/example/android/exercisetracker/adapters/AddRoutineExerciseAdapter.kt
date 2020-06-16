@@ -21,6 +21,7 @@ class AddRoutineExerciseAdapter internal constructor(context: Context) :
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var exercises: List<Exercise> = emptyList<Exercise>()
     var tracker: SelectionTracker<Long>? = null
+    private val SELECTION_ID_OFFSET = 1
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val exerciseTitle: TextView = itemView.findViewById(R.id.exercise_title)
@@ -65,5 +66,9 @@ class AddRoutineExerciseAdapter internal constructor(context: Context) :
     fun setExercises(exercises: List<Exercise>) {
         this.exercises = exercises
         notifyDataSetChanged()
+    }
+
+    fun getExerciseIdFromSelectionId(selectionId: Int): Int {
+        return selectionId + SELECTION_ID_OFFSET
     }
 }

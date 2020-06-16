@@ -21,4 +21,4 @@ import androidx.room.ForeignKey
         )
     )
 )
-class ExerciseRoutineJoin(val exerciseId: Long, val routineId: Long)
+data class ExerciseRoutineJoin(val exerciseId: Long, val routineId: Long)
