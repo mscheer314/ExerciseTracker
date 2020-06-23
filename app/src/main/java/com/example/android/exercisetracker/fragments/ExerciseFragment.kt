@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.exercisetracker.R
 import com.example.android.exercisetracker.adapters.ExerciseAdapter
-import com.example.android.exercisetracker.viewmodels.BodyTypeViewModel
 import com.example.android.exercisetracker.viewmodels.ExerciseViewModel
 
 /**
@@ -23,7 +22,6 @@ import com.example.android.exercisetracker.viewmodels.ExerciseViewModel
  */
 class ExerciseFragment : Fragment() {
     private lateinit var exerciseViewModel: ExerciseViewModel
-    private lateinit var bodyTypeViewModel: BodyTypeViewModel
 
     companion object {
         fun newInstance(): ExerciseFragment {

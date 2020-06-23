@@ -5,26 +5,15 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import androidx.sqlite.db.SupportSQLiteDatabase
-import com.example.android.exercisetracker.daos.BodyTypeDao
 import com.example.android.exercisetracker.daos.ExerciseDao
-import com.example.android.exercisetracker.daos.ExerciseRoutineJoinDao
 import com.example.android.exercisetracker.daos.RoutineDao
-import com.example.android.exercisetracker.models.*
-import com.example.android.exercisetracker.models.Set
+import com.example.android.exercisetracker.models.Exercise
+import com.example.android.exercisetracker.models.Routine
+import com.example.android.exercisetracker.models.RoutineExerciseCrossRef
 import com.example.android.exercisetracker.utils.Converters
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 @Database(
-    entities = arrayOf(
-        Workout::class,
-        Routine::class,
-        Exercise::class,
-        Set::class,
-        BodyType::class,
-        ExerciseRoutineJoin::class
-    ),
+    entities = [Routine::class, Exercise::class, RoutineExerciseCrossRef::class],
     version = 1,
     exportSchema = false
 )
@@ -34,23 +23,6 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun exerciseDao(): ExerciseDao
     abstract fun routineDao(): RoutineDao
-    abstract fun bodyTypeDao(): BodyTypeDao
-    abstract fun exerciseRoutineJoinDao(): ExerciseRoutineJoinDao
-
-    private class AppDatabaseCallback(
-        private val scope: CoroutineScope
-    ) : RoomDatabase.Callback() {
-        override fun onOpen(db: SupportSQLiteDatabase) {
-            super.onOpen(db)
-            INSTANCE?.let { appDatabase ->
-                scope.launch {
-                    val exerciseDao = appDatabase.exerciseDao()
-                    val bodyTypeDao = appDatabase.bodyTypeDao()
-                    val exerciseRoutineJoinDao = appDatabase.exerciseRoutineJoinDao()
-                }
-            }
-        }
-    }
 
     companion object {
         // Singleton prevents multiple instances of database opening at the

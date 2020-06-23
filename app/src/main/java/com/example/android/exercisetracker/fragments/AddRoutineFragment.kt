@@ -19,12 +19,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.exercisetracker.R
 import com.example.android.exercisetracker.adapters.AddRoutineExerciseAdapter
-import com.example.android.exercisetracker.models.ExerciseRoutineJoin
 import com.example.android.exercisetracker.models.Routine
+import com.example.android.exercisetracker.models.RoutineExerciseCrossRef
 import com.example.android.exercisetracker.utils.ExerciseDetailsLookup
 import com.example.android.exercisetracker.utils.Keyboard
 import com.example.android.exercisetracker.utils.MyItemKeyProvider
-import com.example.android.exercisetracker.viewmodels.ExerciseRoutineJoinViewModel
 import com.example.android.exercisetracker.viewmodels.ExerciseViewModel
 import com.example.android.exercisetracker.viewmodels.RoutineViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -36,16 +35,11 @@ import kotlin.coroutines.CoroutineContext
 class AddRoutineFragment : Fragment(), CoroutineScope {
     private lateinit var exerciseViewModel: ExerciseViewModel
     private lateinit var routineViewModel: RoutineViewModel
-    private lateinit var exerciseRoutineJoinViewModel: ExerciseRoutineJoinViewModel
 
     var tracker: SelectionTracker<Long>? = null
-    var routineId: Long? = null
+    var routineId: Int? = null
 
-    companion object {
-        fun newInstance(): ExerciseFragment {
-            return ExerciseFragment()
-        }
-    }
+    companion object;
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -78,8 +72,6 @@ class AddRoutineFragment : Fragment(), CoroutineScope {
                 showErrorMessage()
             } else {
                 routineViewModel = ViewModelProvider(this).get(RoutineViewModel::class.java)
-                exerciseRoutineJoinViewModel =
-                    ViewModelProvider(this).get(ExerciseRoutineJoinViewModel::class.java)
 
                 val title = routineTitleEditText.text.toString()
                 val routine = Routine(0, title)
@@ -91,7 +83,7 @@ class AddRoutineFragment : Fragment(), CoroutineScope {
                     }
                     launch {
                         insertRoutineToDatabase(routine)
-                        insertExerciseRoutineJoinsToDatabase(selectedExercises)
+                        insertRoutineExerciseJoinsToDatabase(selectedExercises)
                     }
                 }
                 closeKeyboard(view)
@@ -104,17 +96,19 @@ class AddRoutineFragment : Fragment(), CoroutineScope {
         return tracker?.selection?.map { it.toInt() }?.toMutableList()
     }
 
-    private fun insertExerciseRoutineJoinsToDatabase(selectedExercises: MutableList<Int>) {
+    private fun insertRoutineExerciseJoinsToDatabase(selectedExercises: MutableList<Int>) {
         selectedExercises.forEach {
-            val exerciseRoutineJoin =
-                routineId?.toLong()?.let { it1 ->
-                    ExerciseRoutineJoin(
-                        it.toLong(),
-                        it1
+            val routineExerciseCrossRef =
+                routineId?.let { routine ->
+                    RoutineExerciseCrossRef(
+                        routine,
+                        it
                     )
                 }
-            if (exerciseRoutineJoin != null) {
-                exerciseRoutineJoinViewModel.insert(exerciseRoutineJoin)
+            if (routineExerciseCrossRef != null) {
+                launch {
+                    routineViewModel.insert(routineExerciseCrossRef)
+                }
             }
         }
     }
@@ -152,7 +146,7 @@ class AddRoutineFragment : Fragment(), CoroutineScope {
         recyclerView: RecyclerView,
         adapter: AddRoutineExerciseAdapter
     ) {
-        tracker = SelectionTracker.Builder<Long>(
+        tracker = SelectionTracker.Builder(
             "mySelection",
             recyclerView,
             MyItemKeyProvider(recyclerView),

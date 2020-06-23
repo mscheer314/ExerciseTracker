@@ -14,16 +14,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.exercisetracker.R
 import com.example.android.exercisetracker.adapters.RoutineAdapter
+import com.example.android.exercisetracker.viewmodels.ExerciseViewModel
 import com.example.android.exercisetracker.viewmodels.RoutineViewModel
 
 class StartWorkoutFragment : Fragment() {
     private lateinit var routineViewModel: RoutineViewModel
-
-    companion object {
-        fun newInstance(): StartWorkoutFragment {
-            return StartWorkoutFragment()
-        }
-    }
+    private lateinit var exerciseViewModel: ExerciseViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,15 +35,29 @@ class StartWorkoutFragment : Fragment() {
         recyclerView.adapter = adapter
 
         routineViewModel = ViewModelProvider(this).get(RoutineViewModel::class.java)
-        routineViewModel.allRoutines.observe(viewLifecycleOwner, Observer { routines ->
+
+        setUpRecyclerViewContent(adapter)
+        setUpAddRoutineButton(view)
+
+        return view
+    }
+
+    private fun setUpRecyclerViewContent(adapter: RoutineAdapter) {
+        sendRoutinesToAdapter(adapter)
+    }
+
+    private fun sendRoutinesToAdapter(adapter: RoutineAdapter) {
+        routineViewModel.allRoutinesWithExercises.observe(viewLifecycleOwner, Observer { routines ->
             routines?.let { adapter.setRoutines(it) }
         })
+    }
 
+    private fun setUpAddRoutineButton(view: View) {
         val button: Button = view.findViewById(R.id.buttonAddRoutine)
         button.setOnClickListener {
             view.findNavController().navigate(R.id.navigation_add_routine)
         }
-
-        return view
     }
 }
+
+

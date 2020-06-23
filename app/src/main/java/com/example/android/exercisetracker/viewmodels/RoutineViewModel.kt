@@ -5,19 +5,24 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.example.android.exercisetracker.database.AppRepository
 import com.example.android.exercisetracker.models.Routine
+import com.example.android.exercisetracker.models.RoutineExerciseCrossRef
+import com.example.android.exercisetracker.models.RoutineWithExercises
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class RoutineViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository: AppRepository
-    val allRoutines: LiveData<List<Routine>>
+    private val repository: AppRepository = AppRepository(application)
+    val allRoutinesWithExercises: LiveData<List<RoutineWithExercises>>
 
     init {
-        repository = AppRepository(application)
-        allRoutines = repository.allRoutines
+        allRoutinesWithExercises = repository.allRoutinesWithExercises
     }
 
-    suspend fun insert(routine: Routine): Long? =
+    suspend fun insert(routine: Routine): Int? =
         withContext(Dispatchers.IO) { repository.insert(routine) }
 
+    suspend fun insert(routineExerciseCrossRef: RoutineExerciseCrossRef) =
+        withContext(Dispatchers.IO) {
+            repository.insert(routineExerciseCrossRef)
+        }
 }

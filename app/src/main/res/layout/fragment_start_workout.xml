@@ -52,7 +52,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/routines_label" />
+        app:layout_constraintTop_toBottomOf="@+id/routines_label"
+        tools:listitem="@layout/routine_list_item" />
 
     <Button
         android:id="@+id/buttonAddRoutine"

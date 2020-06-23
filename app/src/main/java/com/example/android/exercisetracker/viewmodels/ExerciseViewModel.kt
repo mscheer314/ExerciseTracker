@@ -15,11 +15,15 @@ class ExerciseViewModel(application: Application) : AndroidViewModel(application
     val allExercises: LiveData<List<Exercise>>
 
     init {
-        val exerciseDao = AppDatabase.getDatabase(application)?.exerciseDao()
+        val exerciseDao = AppDatabase.getDatabase(application).exerciseDao()
         repository = AppRepository(application)
         allExercises = repository.allExercises
     }
 
     fun insert(exercise: Exercise) =
         viewModelScope.launch(Dispatchers.IO) { repository.insert(exercise) }
+
+    fun getExerciseById(id: Int): LiveData<Exercise>? {
+        return repository.getExerciseById(id)
+    }
 }
