@@ -51,6 +51,7 @@ class AddRoutineFragment : Fragment(), CoroutineScope {
 
         val recyclerView: RecyclerView = view.findViewById(R.id.rv_add_routine_exercises)
         val routineTitleEditText = view.findViewById<EditText>(R.id.routineTitleEditText)
+        setUpHideKeyboardWhenNotTyping(routineTitleEditText)
         val addRoutineSaveButton = view.findViewById<Button>(R.id.addRoutineSaveButton)
         val adapter = AddRoutineExerciseAdapter(activity)
 
@@ -59,6 +60,12 @@ class AddRoutineFragment : Fragment(), CoroutineScope {
         setUpTracker(recyclerView, adapter)
 
         return view
+    }
+
+    private fun setUpHideKeyboardWhenNotTyping(routineTitleEditText: EditText) {
+        routineTitleEditText.setOnFocusChangeListener { v, _ ->
+            context?.let { view?.let { it1 -> Keyboard.hideSoftKeyBoard(it, it1) } }
+        }
     }
 
     private fun setUpSaveButton(
