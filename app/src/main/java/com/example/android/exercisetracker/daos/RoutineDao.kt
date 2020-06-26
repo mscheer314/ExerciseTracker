@@ -5,6 +5,7 @@ import androidx.room.*
 import com.example.android.exercisetracker.models.Routine
 import com.example.android.exercisetracker.models.RoutineExerciseCrossRef
 import com.example.android.exercisetracker.models.RoutineWithExercises
+import com.example.android.exercisetracker.models.RoutineWithSets
 
 @Dao
 interface RoutineDao {
@@ -22,4 +23,8 @@ interface RoutineDao {
     @Transaction
     @Query("SELECT * FROM routine")
     fun getRoutinesWithExercises(): LiveData<List<RoutineWithExercises>>
+
+    @Transaction
+    @Query("SELECT * FROM routine")
+    fun getRoutineWithSets(): LiveData<List<RoutineWithSets>>
 }
