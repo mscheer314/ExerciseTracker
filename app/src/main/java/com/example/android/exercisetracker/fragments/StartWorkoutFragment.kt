@@ -14,12 +14,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.exercisetracker.R
 import com.example.android.exercisetracker.adapters.RoutineAdapter
-import com.example.android.exercisetracker.viewmodels.ExerciseViewModel
 import com.example.android.exercisetracker.viewmodels.RoutineViewModel
 
 class StartWorkoutFragment : Fragment() {
     private lateinit var routineViewModel: RoutineViewModel
-    private lateinit var exerciseViewModel: ExerciseViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,

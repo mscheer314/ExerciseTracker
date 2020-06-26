@@ -1,9 +1,12 @@
 package com.example.android.exercisetracker.models
 
+import android.os.Parcelable
 import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class RoutineWithExercises(
     @Embedded val routine: Routine,
     @Relation(
@@ -11,5 +14,5 @@ data class RoutineWithExercises(
         entityColumn = "exerciseId",
         associateBy = Junction(RoutineExerciseCrossRef::class)
     )
-    val exercices: List<Exercise>
-)
+    val exercises: List<Exercise>
+) : Parcelable

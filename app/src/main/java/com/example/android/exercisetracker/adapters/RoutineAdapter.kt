@@ -1,16 +1,18 @@
 package com.example.android.exercisetracker.adapters
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.exercisetracker.R
+import com.example.android.exercisetracker.WorkoutActivity
 import com.example.android.exercisetracker.models.Exercise
 import com.example.android.exercisetracker.models.RoutineWithExercises
 
-class RoutineAdapter internal constructor(context: Context) :
+class RoutineAdapter internal constructor(private val context: Context) :
     RecyclerView.Adapter<RoutineAdapter.ViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
@@ -34,7 +36,12 @@ class RoutineAdapter internal constructor(context: Context) :
         val currentRoutine = routinesWithExercises[position]
         holder.routineName.text = currentRoutine.routine.routineName
         holder.routineExercises.text =
-            combineExerciseNamesIntoSingleString(currentRoutine.exercices)
+            combineExerciseNamesIntoSingleString(currentRoutine.exercises)
+        holder.itemView.setOnClickListener {
+            val intent = Intent(context, WorkoutActivity::class.java)
+            intent.putExtra("routine", currentRoutine)
+            context.startActivity(intent)
+        }
     }
 
     private fun combineExerciseNamesIntoSingleString(exercises: List<Exercise>): String {
