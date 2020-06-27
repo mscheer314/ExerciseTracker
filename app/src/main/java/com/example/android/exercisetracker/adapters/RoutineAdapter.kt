@@ -33,13 +33,13 @@ class RoutineAdapter internal constructor(private val context: Context) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val currentRoutine = routinesWithExercises[position]
-        holder.routineName.text = currentRoutine.routine.routineName
+        val currentRoutineWithExercises = routinesWithExercises[position]
+        holder.routineName.text = currentRoutineWithExercises.routine.routineName
         holder.routineExercises.text =
-            combineExerciseNamesIntoSingleString(currentRoutine.exercises)
+            combineExerciseNamesIntoSingleString(currentRoutineWithExercises.exercises)
         holder.itemView.setOnClickListener {
             val intent = Intent(context, WorkoutActivity::class.java)
-            intent.putExtra("routine", currentRoutine)
+            intent.putExtra("routineWithExercises", currentRoutineWithExercises)
             context.startActivity(intent)
         }
     }

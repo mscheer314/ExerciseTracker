@@ -14,4 +14,7 @@
     <string name="add_name">Add Name</string>
     <string name="save">Save</string>
     <string name="routine_title">Routine Title</string>
+    <string name="finish">Finish</string>
+    <string name="lbs">lbs</string>
+    <string name="reps">reps</string>
 </resources>
