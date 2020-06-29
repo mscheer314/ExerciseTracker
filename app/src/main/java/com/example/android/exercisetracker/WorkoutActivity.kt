@@ -17,6 +17,8 @@ class WorkoutActivity : AppCompatActivity() {
             intent.getParcelableExtra<RoutineWithExercises>("routineWithExercises")
         Log.i("routineW-E Name", routineWithExercises.routine.routineName)
 
+        routineTitle.text = routineWithExercises.routine.routineName
+
         rv_workoutExercises.adapter = WorkoutAdapter(routineWithExercises)
         rv_workoutExercises.layoutManager = LinearLayoutManager(this)
     }
