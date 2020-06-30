@@ -25,6 +25,6 @@ interface RoutineDao {
     fun getRoutinesWithExercises(): LiveData<List<RoutineWithExercises>>
 
     @Transaction
-    @Query("SELECT * FROM routine")
-    fun getRoutineWithSets(): LiveData<List<RoutineWithSets>>
+    @Query("SELECT * FROM routine WHERE routineId = :id")
+    fun getRoutineWithSets(id: Int): LiveData<RoutineWithSets>
 }

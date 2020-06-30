@@ -4,10 +4,7 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import com.example.android.exercisetracker.daos.ExerciseDao
 import com.example.android.exercisetracker.daos.RoutineDao
-import com.example.android.exercisetracker.models.Exercise
-import com.example.android.exercisetracker.models.Routine
-import com.example.android.exercisetracker.models.RoutineExerciseCrossRef
-import com.example.android.exercisetracker.models.RoutineWithExercises
+import com.example.android.exercisetracker.models.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlin.coroutines.CoroutineContext
@@ -43,4 +40,9 @@ class AppRepository(application: Application) : CoroutineScope {
     fun getExerciseById(id: Int): LiveData<Exercise>? {
         return exerciseDao?.getExerciseById(id)
     }
+
+    fun getRoutineWithSetsById(id: Int): LiveData<RoutineWithSets>? {
+        return routineDao?.getRoutineWithSets(id)
+    }
+
 }

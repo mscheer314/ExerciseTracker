@@ -7,6 +7,7 @@ import com.example.android.exercisetracker.database.AppRepository
 import com.example.android.exercisetracker.models.Routine
 import com.example.android.exercisetracker.models.RoutineExerciseCrossRef
 import com.example.android.exercisetracker.models.RoutineWithExercises
+import com.example.android.exercisetracker.models.RoutineWithSets
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -25,4 +26,8 @@ class RoutineViewModel(application: Application) : AndroidViewModel(application)
         withContext(Dispatchers.IO) {
             repository.insert(routineExerciseCrossRef)
         }
+
+    fun getRoutineWithSetsById(id: Int): LiveData<RoutineWithSets>? {
+        return repository.getRoutineWithSetsById(id)
+    }
 }

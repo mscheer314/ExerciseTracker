@@ -6,17 +6,38 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.exercisetracker.R
-import com.example.android.exercisetracker.models.RoutineWithExercises
-import com.example.android.exercisetracker.models.WorkoutRowItem
-import com.example.android.exercisetracker.models.WorkoutRowType
+import com.example.android.exercisetracker.models.*
+import com.example.android.exercisetracker.models.Set
 
 class WorkoutAdapter(private var routineWithExercises: RoutineWithExercises) :
     RecyclerView.Adapter<DefaultWorkoutViewHolder>() {
+    private lateinit var routineWithSets: RoutineWithSets
     private var adapterContents: MutableList<WorkoutRowItem> = mutableListOf<WorkoutRowItem>()
+    private val NO_LBS = 0
+    private val NO_REPS = 0
+    private val AUTO_INCREMENTED = 0
 
-    init {
-        routineWithExercises.exercises.forEach {
-            adapterContents.add(WorkoutRowItem(WorkoutRowType.EXERCISE, it, null))
+    fun assignTypesToRowItems() {
+        routineWithExercises.exercises.forEach { exercise ->
+            adapterContents.add(WorkoutRowItem(WorkoutRowType.EXERCISE, exercise, null))
+            if (this::routineWithSets.isInitialized) {
+                routineWithSets.sets.forEach { set ->
+                    if (set.exerciseId == exercise.exerciseId) {
+                        adapterContents.add(WorkoutRowItem(WorkoutRowType.SET, null, set))
+                    }
+                }
+            } else {
+                adapterContents.add(
+                    WorkoutRowItem(
+                        WorkoutRowType.SET,
+                        null,
+                        Set(
+                            AUTO_INCREMENTED, NO_LBS, NO_REPS,
+                            routineWithExercises.routine.routineId, exercise.exerciseId
+                        )
+                    )
+                )
+            }
         }
     }
 
@@ -48,14 +69,14 @@ class WorkoutAdapter(private var routineWithExercises: RoutineWithExercises) :
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (adapterContents[position].type == WorkoutRowType.EXERCISE) {
-            return WorkoutRowType.EXERCISE.ordinal
+        return if (adapterContents[position].type == WorkoutRowType.EXERCISE) {
+            WorkoutRowType.EXERCISE.ordinal
         } else {
-            return WorkoutRowType.SET.ordinal
+            WorkoutRowType.SET.ordinal
         }
     }
 
-    class WorkoutRowDiffCallback(
+    /*class WorkoutRowDiffCallback(
         private val newRows: List<WorkoutRowItem>,
         private val oldRows: List<WorkoutRowItem>
     ) : DiffUtil.Callback() {
@@ -74,5 +95,10 @@ class WorkoutAdapter(private var routineWithExercises: RoutineWithExercises) :
             val newRow = newRows[newItemPosition]
             return oldRow == newRow
         }
+    }*/
+
+    fun setRoutineWithSets(routineWithSets: RoutineWithSets) {
+        this.routineWithSets = routineWithSets
+        notifyDataSetChanged()
     }
 }

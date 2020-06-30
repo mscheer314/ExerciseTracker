@@ -14,11 +14,10 @@ class ExerciseAdapter internal constructor(context: Context) :
     RecyclerView.Adapter<ExerciseAdapter.ViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-    private var exercises: List<Exercise> = emptyList<Exercise>()
+    private var exercises: List<Exercise> = emptyList()
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val exerciseTitle: TextView = itemView.findViewById(R.id.exercise_title)
-        val exerciseArea: TextView = itemView.findViewById(R.id.exercise_area)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -33,7 +32,6 @@ class ExerciseAdapter internal constructor(context: Context) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val current = exercises[position]
         holder.exerciseTitle.text = current.exerciseName
-        // holder.exerciseArea.text = current.exerciseBodyType
 
         holder.itemView.setOnClickListener {
             Toast.makeText(
