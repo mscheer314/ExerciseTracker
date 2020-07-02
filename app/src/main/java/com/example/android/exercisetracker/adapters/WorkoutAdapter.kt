@@ -3,10 +3,12 @@ package com.example.android.exercisetracker.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.exercisetracker.R
 import com.example.android.exercisetracker.models.*
 import com.example.android.exercisetracker.models.Set
+import kotlinx.android.synthetic.main.set_list_item.view.*
 import kotlinx.android.synthetic.main.workout_exercise_list_item.view.*
 
 class WorkoutAdapter(private var routineWithExercises: RoutineWithExercises) :
@@ -60,20 +62,43 @@ class WorkoutAdapter(private var routineWithExercises: RoutineWithExercises) :
         val workoutRow: WorkoutRowItem = adapterContents[position]
         when (workoutRow.type) {
             WorkoutRowType.EXERCISE -> {
-                workoutRow.exercise?.let { exercise ->
-                    holder.setText(
-                        R.id.workout_exercise_title,
-                        exercise.exerciseName
-                    )
-
-                    holder.itemView.addSetButton.setOnClickListener {
-                        addSetRow(exercise)
-                    }
-                }
+                setExerciseRowContent(workoutRow, holder)
             }
             WorkoutRowType.SET -> {
-                holder.setText(R.id.lbsEditText, workoutRow.set?.lbs.toString())
-                holder.setText(R.id.repsEditText, workoutRow.set?.reps.toString())
+                setSetRowContent(holder, workoutRow)
+            }
+        }
+    }
+
+    private fun setSetRowContent(
+        holder: DefaultWorkoutViewHolder,
+        workoutRow: WorkoutRowItem
+    ) {
+        holder.setText(R.id.lbsEditText, workoutRow.set?.lbs.toString())
+        holder.setText(R.id.repsEditText, workoutRow.set?.reps.toString())
+
+        holder.itemView.finishedButton.setOnClickListener {
+            holder.itemView.setBackgroundColor(
+                ContextCompat.getColor(
+                    holder.itemView.context,
+                    R.color.colorRowHighlight
+                )
+            )
+        }
+    }
+
+    private fun setExerciseRowContent(
+        workoutRow: WorkoutRowItem,
+        holder: DefaultWorkoutViewHolder
+    ) {
+        workoutRow.exercise?.let { exercise ->
+            holder.setText(
+                R.id.workout_exercise_title,
+                exercise.exerciseName
+            )
+
+            holder.itemView.addSetButton.setOnClickListener {
+                addSetRow(exercise)
             }
         }
     }
