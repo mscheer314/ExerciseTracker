@@ -3,11 +3,11 @@ package com.example.android.exercisetracker.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.exercisetracker.R
 import com.example.android.exercisetracker.models.*
 import com.example.android.exercisetracker.models.Set
+import kotlinx.android.synthetic.main.workout_exercise_list_item.view.*
 
 class WorkoutAdapter(private var routineWithExercises: RoutineWithExercises) :
     RecyclerView.Adapter<DefaultWorkoutViewHolder>() {
@@ -58,14 +58,50 @@ class WorkoutAdapter(private var routineWithExercises: RoutineWithExercises) :
 
     override fun onBindViewHolder(holder: DefaultWorkoutViewHolder, position: Int) {
         val workoutRow: WorkoutRowItem = adapterContents[position]
-        if (workoutRow.type == WorkoutRowType.EXERCISE) {
-            workoutRow.exercise?.let {
-                holder.setText(
-                    R.id.workout_exercise_title,
-                    it.exerciseName
-                )
+        when (workoutRow.type) {
+            WorkoutRowType.EXERCISE -> {
+                workoutRow.exercise?.let { exercise ->
+                    holder.setText(
+                        R.id.workout_exercise_title,
+                        exercise.exerciseName
+                    )
+
+                    holder.itemView.addSetButton.setOnClickListener {
+                        addSetRow(exercise)
+                    }
+                }
+            }
+            WorkoutRowType.SET -> {
+                holder.setText(R.id.lbsEditText, workoutRow.set?.lbs.toString())
+                holder.setText(R.id.repsEditText, workoutRow.set?.reps.toString())
             }
         }
+    }
+
+    private fun addSetRow(exerciseGettingSet: Exercise) {
+        for (index in 0..adapterContents.size) {
+            if (adapterContents[index].exercise?.exerciseId == exerciseGettingSet.exerciseId
+                && adapterContents[index + 1].exercise?.exerciseId != exerciseGettingSet.exerciseId
+            ) {
+                adapterContents.add(
+                    index + 1,
+                    WorkoutRowItem(
+                        WorkoutRowType.SET,
+                        exerciseGettingSet,
+                        Set(
+                            AUTO_INCREMENTED,
+                            NO_LBS,
+                            NO_REPS,
+                            routineWithExercises.routine.routineId,
+                            exerciseGettingSet.exerciseId
+                        )
+                    )
+                )
+                notifyDataSetChanged()
+                break
+            }
+        }
+
     }
 
     override fun getItemViewType(position: Int): Int {
