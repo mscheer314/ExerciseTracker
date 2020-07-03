@@ -21,22 +21,24 @@ class WorkoutAdapter(private var routineWithExercises: RoutineWithExercises) :
 
     fun assignTypesToRowItems() {
         routineWithExercises.exercises.forEach { exercise ->
-            adapterContents.add(WorkoutRowItem(WorkoutRowType.EXERCISE, exercise, null))
+            adapterContents.add(WorkoutRowItem(WorkoutRowType.EXERCISE, exercise, null, false))
             if (this::routineWithSets.isInitialized) {
                 routineWithSets.sets.forEach { set ->
                     if (set.exerciseId == exercise.exerciseId) {
-                        adapterContents.add(WorkoutRowItem(WorkoutRowType.SET, null, set))
+                        adapterContents.add(WorkoutRowItem(WorkoutRowType.SET, null, set, false))
                     }
                 }
             } else {
                 adapterContents.add(
                     WorkoutRowItem(
                         WorkoutRowType.SET,
-                        null,
+                        exercise,
                         Set(
                             AUTO_INCREMENTED, NO_LBS, NO_REPS,
                             routineWithExercises.routine.routineId, exercise.exerciseId
-                        )
+
+                        ),
+                        false
                     )
                 )
             }
@@ -76,8 +78,25 @@ class WorkoutAdapter(private var routineWithExercises: RoutineWithExercises) :
     ) {
         holder.setText(R.id.lbsEditText, workoutRow.set?.lbs.toString())
         holder.setText(R.id.repsEditText, workoutRow.set?.reps.toString())
+        if (workoutRow.isCompleted) {
+            holder.itemView.setBackgroundColor(
+                ContextCompat.getColor(
+                    holder.itemView.context,
+                    R.color.colorRowHighlight
+                )
+            )
+        }
+        if (!workoutRow.isCompleted) {
+            holder.itemView.setBackgroundColor(
+                ContextCompat.getColor(
+                    holder.itemView.context,
+                    R.color.colorRowWhite
+                )
+            )
+        }
 
         holder.itemView.finishedButton.setOnClickListener {
+            workoutRow.isCompleted = true
             holder.itemView.setBackgroundColor(
                 ContextCompat.getColor(
                     holder.itemView.context,
@@ -106,27 +125,43 @@ class WorkoutAdapter(private var routineWithExercises: RoutineWithExercises) :
     private fun addSetRow(exerciseGettingSet: Exercise) {
         for (index in 0..adapterContents.size) {
             if (adapterContents[index].exercise?.exerciseId == exerciseGettingSet.exerciseId
+                && adapterContents[index] == adapterContents.lastOrNull()
+            ) {
+                addToAdapterContents(index, exerciseGettingSet)
+                break
+            }
+            if (adapterContents[index].exercise?.exerciseId == exerciseGettingSet.exerciseId
                 && adapterContents[index + 1].exercise?.exerciseId != exerciseGettingSet.exerciseId
             ) {
-                adapterContents.add(
-                    index + 1,
-                    WorkoutRowItem(
-                        WorkoutRowType.SET,
-                        exerciseGettingSet,
-                        Set(
-                            AUTO_INCREMENTED,
-                            NO_LBS,
-                            NO_REPS,
-                            routineWithExercises.routine.routineId,
-                            exerciseGettingSet.exerciseId
-                        )
-                    )
-                )
-                notifyDataSetChanged()
+                addToAdapterContents(index, exerciseGettingSet)
                 break
             }
         }
 
+    }
+
+    private fun addToAdapterContents(
+        index: Int,
+        exerciseGettingSet: Exercise
+    ) {
+        adapterContents.add(
+            index + 1,
+            WorkoutRowItem(
+                WorkoutRowType.SET,
+                exerciseGettingSet,
+                Set(
+                    AUTO_INCREMENTED,
+                    NO_LBS,
+                    NO_REPS,
+                    routineWithExercises.routine.routineId,
+                    exerciseGettingSet.exerciseId
+
+                ),
+                false
+            )
+        )
+        notifyDataSetChanged()
+        return
     }
 
     override fun getItemViewType(position: Int): Int {
