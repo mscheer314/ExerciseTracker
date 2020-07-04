@@ -7,14 +7,12 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.android.exercisetracker.daos.ExerciseDao
 import com.example.android.exercisetracker.daos.RoutineDao
-import com.example.android.exercisetracker.models.Exercise
-import com.example.android.exercisetracker.models.Routine
-import com.example.android.exercisetracker.models.RoutineExerciseCrossRef
+import com.example.android.exercisetracker.models.*
 import com.example.android.exercisetracker.models.Set
 import com.example.android.exercisetracker.utils.Converters
 
 @Database(
-    entities = [Routine::class, Exercise::class, RoutineExerciseCrossRef::class, Set::class],
+    entities = [Routine::class, Exercise::class, RoutineExerciseCrossRef::class, Set::class, Workout::class],
     version = 1,
     exportSchema = false
 )

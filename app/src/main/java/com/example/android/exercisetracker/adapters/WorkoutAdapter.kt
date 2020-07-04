@@ -67,14 +67,15 @@ class WorkoutAdapter(private var routineWithExercises: RoutineWithExercises) :
                 setExerciseRowContent(workoutRow, holder)
             }
             WorkoutRowType.SET -> {
-                setSetRowContent(holder, workoutRow)
+                setSetRowContent(holder, workoutRow, position)
             }
         }
     }
 
     private fun setSetRowContent(
         holder: DefaultWorkoutViewHolder,
-        workoutRow: WorkoutRowItem
+        workoutRow: WorkoutRowItem,
+        position: Int
     ) {
         holder.setText(R.id.lbsEditText, workoutRow.set?.lbs.toString())
         holder.setText(R.id.repsEditText, workoutRow.set?.reps.toString())
@@ -94,6 +95,8 @@ class WorkoutAdapter(private var routineWithExercises: RoutineWithExercises) :
                 )
             )
         }
+        holder.itemView.finishedButton.isEnabled = adapterContents[position - 1].isCompleted ||
+                adapterContents[position - 1].type == WorkoutRowType.EXERCISE
 
         holder.itemView.finishedButton.setOnClickListener {
             workoutRow.isCompleted = true
@@ -103,8 +106,10 @@ class WorkoutAdapter(private var routineWithExercises: RoutineWithExercises) :
                     R.color.colorRowHighlight
                 )
             )
+            notifyDataSetChanged()
         }
     }
+    // TODO MAKE CLICKING THE FINISHED BUTTON ENABLE TO FINISH BUTTON ON THE NEXT ITEMVIEW
 
     private fun setExerciseRowContent(
         workoutRow: WorkoutRowItem,
@@ -124,14 +129,10 @@ class WorkoutAdapter(private var routineWithExercises: RoutineWithExercises) :
 
     private fun addSetRow(exerciseGettingSet: Exercise) {
         for (index in 0..adapterContents.size) {
-            if (adapterContents[index].exercise?.exerciseId == exerciseGettingSet.exerciseId
-                && adapterContents[index] == adapterContents.lastOrNull()
-            ) {
-                addToAdapterContents(index, exerciseGettingSet)
-                break
-            }
-            if (adapterContents[index].exercise?.exerciseId == exerciseGettingSet.exerciseId
-                && adapterContents[index + 1].exercise?.exerciseId != exerciseGettingSet.exerciseId
+            // if the index is at the end of the list or last of an exercise
+            if (index + 1 == adapterContents.size
+                || adapterContents[index + 1].type == WorkoutRowType.EXERCISE
+                && exerciseGettingSet.exerciseId == adapterContents[index].exercise?.exerciseId
             ) {
                 addToAdapterContents(index, exerciseGettingSet)
                 break
