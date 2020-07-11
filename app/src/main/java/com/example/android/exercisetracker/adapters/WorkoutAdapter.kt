@@ -1,5 +1,7 @@
 package com.example.android.exercisetracker.adapters
 
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +13,7 @@ import com.example.android.exercisetracker.models.Set
 import kotlinx.android.synthetic.main.set_list_item.view.*
 import kotlinx.android.synthetic.main.workout_exercise_list_item.view.*
 
-class WorkoutAdapter(private var routineWithExercises: RoutineWithExercises) :
+class WorkoutAdapter(private val routineWithExercises: RoutineWithExercises) :
     RecyclerView.Adapter<DefaultWorkoutViewHolder>() {
     private lateinit var routineWithSets: RoutineWithSets
     private var adapterContents: MutableList<WorkoutRowItem> = mutableListOf<WorkoutRowItem>()
@@ -49,18 +51,27 @@ class WorkoutAdapter(private var routineWithExercises: RoutineWithExercises) :
         val layoutInflater = LayoutInflater.from(parent.context)
 
         val inflatedView: View = when (viewType) {
-            WorkoutRowType.EXERCISE.ordinal ->
+            WorkoutRowType.EXERCISE.ordinal -> {
                 layoutInflater.inflate(R.layout.workout_exercise_list_item, parent, false)
+            }
             else -> layoutInflater.inflate(R.layout.set_list_item, parent, false)
         }
-        return DefaultWorkoutViewHolder(inflatedView)
-    }
+        if (viewType == WorkoutRowType.SET.ordinal) {
+            inflatedView.tag = "Set Row"
+        } else {
+            inflatedView.tag = "Exercise Row"
+        }
 
-    override fun getItemCount(): Int {
-        return adapterContents.size
+        return DefaultWorkoutViewHolder(
+            inflatedView,
+            MyEditTextListener(EditTextType.LBS),
+            MyEditTextListener(EditTextType.REPS)
+        )
     }
 
     override fun onBindViewHolder(holder: DefaultWorkoutViewHolder, position: Int) {
+        holder.lbsTextListener.updatePosition(position)
+        holder.repTextListener.updatePosition(position)
         val workoutRow: WorkoutRowItem = adapterContents[position]
         when (workoutRow.type) {
             WorkoutRowType.EXERCISE -> {
@@ -71,45 +82,6 @@ class WorkoutAdapter(private var routineWithExercises: RoutineWithExercises) :
             }
         }
     }
-
-    private fun setSetRowContent(
-        holder: DefaultWorkoutViewHolder,
-        workoutRow: WorkoutRowItem,
-        position: Int
-    ) {
-        holder.setText(R.id.lbsEditText, workoutRow.set?.lbs.toString())
-        holder.setText(R.id.repsEditText, workoutRow.set?.reps.toString())
-        if (workoutRow.isCompleted) {
-            holder.itemView.setBackgroundColor(
-                ContextCompat.getColor(
-                    holder.itemView.context,
-                    R.color.colorRowHighlight
-                )
-            )
-        }
-        if (!workoutRow.isCompleted) {
-            holder.itemView.setBackgroundColor(
-                ContextCompat.getColor(
-                    holder.itemView.context,
-                    R.color.colorRowWhite
-                )
-            )
-        }
-        holder.itemView.finishedButton.isEnabled = adapterContents[position - 1].isCompleted ||
-                adapterContents[position - 1].type == WorkoutRowType.EXERCISE
-
-        holder.itemView.finishedButton.setOnClickListener {
-            workoutRow.isCompleted = true
-            holder.itemView.setBackgroundColor(
-                ContextCompat.getColor(
-                    holder.itemView.context,
-                    R.color.colorRowHighlight
-                )
-            )
-            notifyDataSetChanged()
-        }
-    }
-    // TODO MAKE CLICKING THE FINISHED BUTTON ENABLE TO FINISH BUTTON ON THE NEXT ITEMVIEW
 
     private fun setExerciseRowContent(
         workoutRow: WorkoutRowItem,
@@ -138,7 +110,6 @@ class WorkoutAdapter(private var routineWithExercises: RoutineWithExercises) :
                 break
             }
         }
-
     }
 
     private fun addToAdapterContents(
@@ -151,18 +122,52 @@ class WorkoutAdapter(private var routineWithExercises: RoutineWithExercises) :
                 WorkoutRowType.SET,
                 exerciseGettingSet,
                 Set(
-                    AUTO_INCREMENTED,
+                    index,
                     NO_LBS,
                     NO_REPS,
                     routineWithExercises.routine.routineId,
                     exerciseGettingSet.exerciseId
-
                 ),
                 false
             )
         )
         notifyDataSetChanged()
         return
+    }
+
+    private fun setSetRowContent(
+        holder: DefaultWorkoutViewHolder,
+        workoutRow: WorkoutRowItem,
+        position: Int
+    ) {
+        holder.setText(R.id.lbsEditText, workoutRow.set?.lbs.toString())
+        holder.setText(R.id.repsEditText, workoutRow.set?.reps.toString())
+
+        if (workoutRow.isCompleted) {
+            holder.itemView.setBackgroundColor(
+                ContextCompat.getColor(holder.itemView.context, R.color.colorRowHighlight)
+            )
+        }
+        if (!workoutRow.isCompleted) {
+            holder.itemView.setBackgroundColor(
+                ContextCompat.getColor(
+                    holder.itemView.context, R.color.colorRowWhite
+                )
+            )
+        }
+        holder.itemView.finishedButton.isEnabled = adapterContents[position - 1].isCompleted ||
+                adapterContents[position - 1].type == WorkoutRowType.EXERCISE
+
+        holder.itemView.finishedButton.setOnClickListener {
+            workoutRow.isCompleted = true
+            holder.itemView.setBackgroundColor(
+                ContextCompat.getColor(
+                    holder.itemView.context,
+                    R.color.colorRowHighlight
+                )
+            )
+            notifyItemChanged(position)
+        }
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -173,29 +178,34 @@ class WorkoutAdapter(private var routineWithExercises: RoutineWithExercises) :
         }
     }
 
-    /*class WorkoutRowDiffCallback(
-        private val newRows: List<WorkoutRowItem>,
-        private val oldRows: List<WorkoutRowItem>
-    ) : DiffUtil.Callback() {
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            val oldRow = oldRows[oldItemPosition]
-            val newRow = newRows[newItemPosition]
-            return oldRow.type == newRow.type
-        }
-
-        override fun getOldListSize(): Int = oldRows.size
-
-        override fun getNewListSize(): Int = newRows.size
-
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            val oldRow = oldRows[oldItemPosition]
-            val newRow = newRows[newItemPosition]
-            return oldRow == newRow
-        }
-    }*/
+    override fun getItemCount() = adapterContents.size
 
     fun setRoutineWithSets(routineWithSets: RoutineWithSets) {
         this.routineWithSets = routineWithSets
         notifyDataSetChanged()
+    }
+
+    inner class MyEditTextListener(var editTextType: EditTextType) : TextWatcher {
+        var position = 0
+        fun updatePosition(position: Int) {
+            this.position = position
+        }
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            when (editTextType) {
+                EditTextType.REPS -> if (!s.isNullOrBlank())
+                    adapterContents[position].set?.reps = s.toString().toInt()
+                EditTextType.LBS -> if (!s.isNullOrBlank())
+                    adapterContents[position].set?.lbs = s.toString().toInt()
+            }
+        }
+
+        override fun afterTextChanged(s: Editable?) {}
+    }
+
+    enum class EditTextType {
+        LBS,
+        REPS
     }
 }

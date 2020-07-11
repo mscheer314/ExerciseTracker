@@ -2,15 +2,34 @@ package com.example.android.exercisetracker.adapters
 
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.TextView
 import androidx.annotation.IdRes
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.set_list_item.view.*
 import java.util.*
 
-class DefaultWorkoutViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class DefaultWorkoutViewHolder(
+    itemView: View,
+    lbsTextListener: WorkoutAdapter.MyEditTextListener,
+    repTextListener: WorkoutAdapter.MyEditTextListener
+) :
+    RecyclerView.ViewHolder(itemView) {
+
     private val viewMap: MutableMap<Int, View> = HashMap()
+    val lbsTextListener: WorkoutAdapter.MyEditTextListener
+    val repTextListener: WorkoutAdapter.MyEditTextListener
+
 
     init {
+        this.lbsTextListener = lbsTextListener
+        this.repTextListener = repTextListener
+        if (itemView.tag == "Set Row") {
+            val repsText: EditText = itemView.repsEditText
+            val lbsText: EditText = itemView.lbsEditText
+            lbsText.addTextChangedListener(lbsTextListener)
+            repsText.addTextChangedListener(repTextListener)
+        }
         findViewItems(itemView)
     }
 
