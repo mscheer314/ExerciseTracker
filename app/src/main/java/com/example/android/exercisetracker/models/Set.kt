@@ -16,8 +16,8 @@ import androidx.room.PrimaryKey
 data class Set(
     @PrimaryKey(autoGenerate = true)
     val setId: Int,
-    val lbs: Int,
-    val reps: Int,
+    var lbs: Int,
+    var reps: Int,
     val routineId: Int,
     val exerciseId: Int
 )

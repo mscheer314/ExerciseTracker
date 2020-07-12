@@ -183,7 +183,17 @@ class WorkoutAdapter(private val routineWithExercises: RoutineWithExercises) :
         notifyDataSetChanged()
     }
 
-    inner class MyEditTextListener(var editTextType: EditTextType) : TextWatcher {
+    fun getWorkoutSets(): List<Set> {
+        val sets: MutableList<Set> = mutableListOf()
+        adapterContents.forEach { workoutRowItem ->
+            if (workoutRowItem.type == WorkoutRowType.SET) {
+                workoutRowItem.set?.let { sets.add(it) }
+            }
+        }
+        return sets
+    }
+
+    inner class MyEditTextListener(private var editTextType: EditTextType) : TextWatcher {
         var position = 0
         fun updatePosition(position: Int) {
             this.position = position

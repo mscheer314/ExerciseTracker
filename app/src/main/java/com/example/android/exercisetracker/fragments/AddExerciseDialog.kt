@@ -28,7 +28,6 @@ class AddExerciseDialog : DialogFragment() {
         builder.setPositiveButton("OK", object : DialogInterface.OnClickListener {
             override fun onClick(dialog: DialogInterface, which: Int) {
                 val exercise = Exercise(0, exerciseNameEditText.text.toString())
-                //TODO figure out how to add the exercise area
                 exerciseViewModel.insert(exercise)
                 dismiss()
             }
