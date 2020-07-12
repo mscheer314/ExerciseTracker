@@ -150,9 +150,7 @@ class WorkoutAdapter(private val routineWithExercises: RoutineWithExercises) :
         }
         if (!workoutRow.isCompleted) {
             holder.itemView.setBackgroundColor(
-                ContextCompat.getColor(
-                    holder.itemView.context, R.color.colorRowWhite
-                )
+                ContextCompat.getColor(holder.itemView.context, R.color.colorRowWhite)
             )
         }
         holder.itemView.finishedButton.isEnabled = adapterContents[position - 1].isCompleted ||
