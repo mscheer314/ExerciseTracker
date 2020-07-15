@@ -12,7 +12,7 @@ import kotlinx.coroutines.withContext
 
 class SetViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: AppRepository = AppRepository(application)
-    private val allSets: LiveData<List<Set>>
+    val allSets: LiveData<List<Set>>
 
     init {
         allSets = repository.allSets

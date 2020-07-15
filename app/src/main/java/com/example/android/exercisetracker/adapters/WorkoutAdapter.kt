@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.workout_exercise_list_item.view.*
 class WorkoutAdapter(private val routineWithExercises: RoutineWithExercises) :
     RecyclerView.Adapter<DefaultWorkoutViewHolder>() {
     private lateinit var routineWithSets: RoutineWithSets
+    private var workout: Workout? = null
     private var adapterContents: MutableList<WorkoutRowItem> = mutableListOf<WorkoutRowItem>()
     private val NO_LBS = 0
     private val NO_REPS = 0
@@ -37,9 +38,11 @@ class WorkoutAdapter(private val routineWithExercises: RoutineWithExercises) :
                         exercise,
                         Set(
                             AUTO_INCREMENTED, NO_LBS, NO_REPS,
+                            workout!!.workoutId,
                             routineWithExercises.routine.routineId, exercise.exerciseId
 
-                        ),
+                        )
+                        ,
                         false
                     )
                 )
@@ -125,6 +128,7 @@ class WorkoutAdapter(private val routineWithExercises: RoutineWithExercises) :
                     index,
                     NO_LBS,
                     NO_REPS,
+                    workout!!.workoutId,
                     routineWithExercises.routine.routineId,
                     exerciseGettingSet.exerciseId
                 ),
@@ -191,6 +195,14 @@ class WorkoutAdapter(private val routineWithExercises: RoutineWithExercises) :
             }
         }
         return sets
+    }
+
+    fun setWorkout(workout: Workout) {
+        this.workout = workout
+    }
+
+    fun getWorkout(): Workout? {
+        return this.workout
     }
 
     inner class MyEditTextListener(private var editTextType: EditTextType) : TextWatcher {

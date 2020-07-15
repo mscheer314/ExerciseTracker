@@ -24,4 +24,9 @@
         android:name="com.example.android.exercisetracker.fragments.AddRoutineFragment"
         android:label="fragment_add_routine"
         tools:layout="@layout/fragment_add_routine" />
+    <fragment
+        android:id="@+id/navigation_history"
+        android:name="com.example.android.exercisetracker.fragments.HistoryFragment"
+        android:label="fragment_history"
+        tools:layout="@layout/fragment_history" />
 </navigation>

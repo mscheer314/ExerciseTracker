@@ -8,6 +8,7 @@ import androidx.room.TypeConverters
 import com.example.android.exercisetracker.daos.ExerciseDao
 import com.example.android.exercisetracker.daos.RoutineDao
 import com.example.android.exercisetracker.daos.SetDao
+import com.example.android.exercisetracker.daos.WorkoutDao
 import com.example.android.exercisetracker.models.*
 import com.example.android.exercisetracker.models.Set
 import com.example.android.exercisetracker.utils.Converters
@@ -24,6 +25,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun exerciseDao(): ExerciseDao
     abstract fun routineDao(): RoutineDao
     abstract fun setDao(): SetDao
+    abstract fun workoutDao(): WorkoutDao
 
     companion object {
         // Singleton prevents multiple instances of database opening at the

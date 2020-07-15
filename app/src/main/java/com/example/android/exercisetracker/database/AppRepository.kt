@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import com.example.android.exercisetracker.daos.ExerciseDao
 import com.example.android.exercisetracker.daos.RoutineDao
 import com.example.android.exercisetracker.daos.SetDao
+import com.example.android.exercisetracker.daos.WorkoutDao
 import com.example.android.exercisetracker.models.*
 import com.example.android.exercisetracker.models.Set
 import kotlinx.coroutines.CoroutineScope
@@ -18,18 +19,21 @@ class AppRepository(application: Application) : CoroutineScope {
     private var exerciseDao: ExerciseDao?
     private var routineDao: RoutineDao?
     private var setDao: SetDao?
+    private var workoutDao: WorkoutDao?
 
     init {
         val database = AppDatabase.getDatabase(application)
         exerciseDao = database.exerciseDao()
         routineDao = database.routineDao()
         setDao = database.setDao()
+        workoutDao = database.workoutDao()
     }
 
     val allExercises: LiveData<List<Exercise>> = exerciseDao?.getAllExercises()!!
     val allRoutinesWithExercises: LiveData<List<RoutineWithExercises>> =
         routineDao?.getRoutinesWithExercises()!!
     val allSets: LiveData<List<Set>> = setDao?.getAllSets()!!
+    val allWorkouts: LiveData<List<Workout>> = workoutDao?.getAllWorkouts()!!
 
     fun insert(exercise: Exercise) {
         exerciseDao?.insert(exercise)
@@ -42,8 +46,12 @@ class AppRepository(application: Application) : CoroutineScope {
         routineDao?.insert(routineExerciseCrossRef)
     }
 
-    fun insert(set:Set){
+    fun insert(set: Set) {
         setDao?.insert(set)
+    }
+
+    fun insert(workout: Workout) {
+        workoutDao?.insert(workout)
     }
 
     fun getExerciseById(id: Int): LiveData<Exercise>? {

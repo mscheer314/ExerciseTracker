@@ -9,13 +9,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.android.exercisetracker.adapters.WorkoutAdapter
 import com.example.android.exercisetracker.models.RoutineWithExercises
+import com.example.android.exercisetracker.models.Workout
 import com.example.android.exercisetracker.viewmodels.RoutineViewModel
 import com.example.android.exercisetracker.viewmodels.SetViewModel
-import kotlinx.android.synthetic.main.activity_main.*
+import com.example.android.exercisetracker.viewmodels.WorkoutViewModel
 import kotlinx.android.synthetic.main.activity_workout.*
+import org.threeten.bp.LocalDate
 
 class WorkoutActivity : AppCompatActivity() {
     private lateinit var routineViewModel: RoutineViewModel
+    private lateinit var workoutViewModel: WorkoutViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +26,7 @@ class WorkoutActivity : AppCompatActivity() {
 
         val routineWithExercises =
             intent.getParcelableExtra<RoutineWithExercises>("routineWithExercises")
+        val workout = intent.getParcelableExtra<Workout>("workout")
 
         routineTitle.text = routineWithExercises.routine.routineName
 
@@ -36,10 +40,14 @@ class WorkoutActivity : AppCompatActivity() {
                 adapter.setRoutineWithSets(routineWithSets)
             }
         )
+        adapter.setWorkout(workout)
         adapter.assignTypesToRowItems()
+
 
         val finishedButton = findViewById<Button>(R.id.finishedButton)
         finishedButton.setOnClickListener {
+            val workoutViewModel = ViewModelProvider(this).get(WorkoutViewModel::class.java)
+            adapter.getWorkout()?.let { it1 -> workoutViewModel.insert(it1) }
             val setViewModel = ViewModelProvider(this).get(SetViewModel::class.java)
             val sets = adapter.getWorkoutSets()
             sets.forEach { set ->

@@ -11,12 +11,15 @@ import com.example.android.exercisetracker.R
 import com.example.android.exercisetracker.WorkoutActivity
 import com.example.android.exercisetracker.models.Exercise
 import com.example.android.exercisetracker.models.RoutineWithExercises
+import com.example.android.exercisetracker.models.Workout
+import com.example.android.exercisetracker.viewmodels.WorkoutViewModel
 
 class RoutineAdapter internal constructor(private val context: Context) :
     RecyclerView.Adapter<RoutineAdapter.ViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var routinesWithExercises: List<RoutineWithExercises> = emptyList()
+    private var workout: Workout? = null
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val routineName: TextView = itemView.findViewById(R.id.routine_title)
@@ -40,6 +43,7 @@ class RoutineAdapter internal constructor(private val context: Context) :
         holder.itemView.setOnClickListener {
             val intent = Intent(context, WorkoutActivity::class.java)
             intent.putExtra("routineWithExercises", currentRoutineWithExercises)
+            intent.putExtra("workout", workout)
             context.startActivity(intent)
         }
     }
@@ -58,4 +62,9 @@ class RoutineAdapter internal constructor(private val context: Context) :
         this.routinesWithExercises = routines
         notifyDataSetChanged()
     }
+
+    fun setWorkout(workout: Workout){
+        this.workout = workout
+    }
+
 }

@@ -14,7 +14,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.exercisetracker.R
 import com.example.android.exercisetracker.adapters.RoutineAdapter
+import com.example.android.exercisetracker.models.Workout
 import com.example.android.exercisetracker.viewmodels.RoutineViewModel
+import com.example.android.exercisetracker.viewmodels.WorkoutViewModel
+import org.threeten.bp.LocalDate
 
 class StartWorkoutFragment : Fragment() {
     private lateinit var routineViewModel: RoutineViewModel
@@ -36,6 +39,9 @@ class StartWorkoutFragment : Fragment() {
 
         setUpRecyclerViewContent(adapter)
         setUpAddRoutineButton(view)
+        val workout = Workout(0, LocalDate.now())
+
+        adapter.setWorkout(workout)
 
         return view
     }

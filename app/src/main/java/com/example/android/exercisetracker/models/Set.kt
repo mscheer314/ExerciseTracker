@@ -18,6 +18,7 @@ data class Set(
     val setId: Int,
     var lbs: Int,
     var reps: Int,
+    val workoutId: Int,
     val routineId: Int,
     val exerciseId: Int
 )

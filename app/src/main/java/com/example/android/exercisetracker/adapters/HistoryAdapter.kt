@@ -5,37 +5,35 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.exercisetracker.R
-import com.example.android.exercisetracker.models.Exercise
+import com.example.android.exercisetracker.models.Set
 
-class ExerciseAdapter internal constructor(context: Context) :
-    RecyclerView.Adapter<ExerciseAdapter.ViewHolder>() {
-
+class HistoryAdapter internal constructor(context: Context) :
+    RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-    private var exercises: List<Exercise> = emptyList()
+    private var sets: List<Set> = emptyList()
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val exerciseTitle: TextView = itemView.findViewById(R.id.exercise_title)
+        val workoutDate: TextView = itemView.findViewById(R.id.date)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val itemView = inflater.inflate(R.layout.exercise_list_item, parent, false)
+        val itemView = inflater.inflate(R.layout.history_list_item, parent, false)
         return ViewHolder(itemView)
     }
 
     override fun getItemCount(): Int {
-        return exercises.size
+        TODO("Not yet implemented")
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val current = exercises[position]
-        holder.exerciseTitle.text = current.exerciseName
+        val current = sets[position]
+      //  holder.workoutDate.text = current.
     }
 
-    fun setExercises(exercises: List<Exercise>) {
-        this.exercises = exercises
+    fun setSets(sets: List<Set>) {
+        this.sets = sets
         notifyDataSetChanged()
     }
 }
