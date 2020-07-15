@@ -147,18 +147,29 @@ class WorkoutAdapter(private val routineWithExercises: RoutineWithExercises) :
         holder.setText(R.id.lbsEditText, workoutRow.set?.lbs.toString())
         holder.setText(R.id.repsEditText, workoutRow.set?.reps.toString())
 
+        // if workoutrow is completed, make the background color purple
         if (workoutRow.isCompleted) {
             holder.itemView.setBackgroundColor(
                 ContextCompat.getColor(holder.itemView.context, R.color.colorRowHighlight)
             )
         }
+        // if the workout row isn't completed, make the background white
         if (!workoutRow.isCompleted) {
             holder.itemView.setBackgroundColor(
                 ContextCompat.getColor(holder.itemView.context, R.color.colorRowWhite)
             )
         }
-        holder.itemView.finishedButton.isEnabled = adapterContents[position - 1].isCompleted ||
-                adapterContents[position - 1].type == WorkoutRowType.EXERCISE
+
+        if (position != 0) {
+            if (adapterContents[position - 1].type == WorkoutRowType.EXERCISE || adapterContents[position -1].isCompleted) {
+                holder.itemView.finishedButton.isEnabled = true
+            } else {
+                holder.itemView.finishedButton.isEnabled = false
+            }
+        }
+
+        //   holder.itemView.finishedButton.isEnabled = adapterContents[position - 1].isCompleted ||
+        //           adapterContents[position - 1].type == WorkoutRowType.EXERCISE
 
         holder.itemView.finishedButton.setOnClickListener {
             workoutRow.isCompleted = true
@@ -168,7 +179,7 @@ class WorkoutAdapter(private val routineWithExercises: RoutineWithExercises) :
                     R.color.colorRowHighlight
                 )
             )
-            notifyItemChanged(position)
+            notifyDataSetChanged()
         }
     }
 
