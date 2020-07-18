@@ -7,7 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.android.exercisetracker.database.AppRepository
 import com.example.android.exercisetracker.models.Workout
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.async
+import kotlinx.coroutines.withContext
 
 class WorkoutViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: AppRepository
@@ -18,6 +19,13 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         allWorkouts = repository.allWorkouts
     }
 
-    fun insert(workout: Workout) =
-        viewModelScope.launch(Dispatchers.IO) { repository.insert(workout) }
+    suspend fun insert(workout: Workout): Int {
+        var idReturn = 0
+        //viewModelScope.async(Dispatchers.IO) {
+        withContext(Dispatchers.IO) {
+            val id = async { repository.insert(workout) }
+            idReturn = id.await()?.toInt()!!
+        }
+        return idReturn
+    }
 }

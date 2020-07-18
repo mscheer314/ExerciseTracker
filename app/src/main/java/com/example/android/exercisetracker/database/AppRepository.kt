@@ -50,8 +50,8 @@ class AppRepository(application: Application) : CoroutineScope {
         setDao?.insert(set)
     }
 
-    fun insert(workout: Workout) {
-        workoutDao?.insert(workout)
+    suspend fun insert(workout: Workout) : Long? {
+       return  workoutDao?.insert(workout)
     }
 
     fun getExerciseById(id: Int): LiveData<Exercise>? {

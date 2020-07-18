@@ -14,6 +14,7 @@ import com.example.android.exercisetracker.viewmodels.RoutineViewModel
 import com.example.android.exercisetracker.viewmodels.SetViewModel
 import com.example.android.exercisetracker.viewmodels.WorkoutViewModel
 import kotlinx.android.synthetic.main.activity_workout.*
+import kotlinx.coroutines.runBlocking
 import org.threeten.bp.LocalDate
 
 class WorkoutActivity : AppCompatActivity() {
@@ -26,7 +27,6 @@ class WorkoutActivity : AppCompatActivity() {
 
         val routineWithExercises =
             intent.getParcelableExtra<RoutineWithExercises>("routineWithExercises")
-        val workout = intent.getParcelableExtra<Workout>("workout")
 
         routineTitle.text = routineWithExercises.routine.routineName
 
@@ -40,14 +40,17 @@ class WorkoutActivity : AppCompatActivity() {
                 adapter.setRoutineWithSets(routineWithSets)
             }
         )
-        adapter.setWorkout(workout)
-        adapter.assignTypesToRowItems()
 
+        workoutViewModel = ViewModelProvider(this).get(WorkoutViewModel::class.java)
+
+        runBlocking {
+            val workoutId = workoutViewModel.insert(Workout(0, LocalDate.now()))
+            adapter.setWorkoutId(workoutId)
+            adapter.assignTypesToRowItems()
+        }
 
         val finishedButton = findViewById<Button>(R.id.finishedButton)
         finishedButton.setOnClickListener {
-            val workoutViewModel = ViewModelProvider(this).get(WorkoutViewModel::class.java)
-            adapter.getWorkout()?.let { it1 -> workoutViewModel.insert(it1) }
             val setViewModel = ViewModelProvider(this).get(SetViewModel::class.java)
             val sets = adapter.getWorkoutSets()
             sets.forEach { set ->

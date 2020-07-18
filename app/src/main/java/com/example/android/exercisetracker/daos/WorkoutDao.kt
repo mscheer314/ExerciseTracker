@@ -13,5 +13,5 @@ interface WorkoutDao {
     fun getAllWorkouts(): LiveData<List<Workout>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insert(workout: Workout)
+    suspend fun insert(workout: Workout): Long
 }

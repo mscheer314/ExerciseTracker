@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.workout_exercise_list_item.view.*
 class WorkoutAdapter(private val routineWithExercises: RoutineWithExercises) :
     RecyclerView.Adapter<DefaultWorkoutViewHolder>() {
     private lateinit var routineWithSets: RoutineWithSets
-    private var workout: Workout? = null
+    private var workoutId: Int? = null
     private var adapterContents: MutableList<WorkoutRowItem> = mutableListOf<WorkoutRowItem>()
     private val NO_LBS = 0
     private val NO_REPS = 0
@@ -36,12 +36,13 @@ class WorkoutAdapter(private val routineWithExercises: RoutineWithExercises) :
                     WorkoutRowItem(
                         WorkoutRowType.SET,
                         exercise,
-                        Set(
-                            AUTO_INCREMENTED, NO_LBS, NO_REPS,
-                            workout!!.workoutId,
-                            routineWithExercises.routine.routineId, exercise.exerciseId
-
-                        )
+                        workoutId?.let {
+                            Set(
+                                AUTO_INCREMENTED, NO_LBS, NO_REPS,
+                                it,
+                                routineWithExercises.routine.routineId, exercise.exerciseId
+                            )
+                        }
                         ,
                         false
                     )
@@ -124,14 +125,16 @@ class WorkoutAdapter(private val routineWithExercises: RoutineWithExercises) :
             WorkoutRowItem(
                 WorkoutRowType.SET,
                 exerciseGettingSet,
-                Set(
-                    index,
-                    NO_LBS,
-                    NO_REPS,
-                    workout!!.workoutId,
-                    routineWithExercises.routine.routineId,
-                    exerciseGettingSet.exerciseId
-                ),
+                workoutId?.let {
+                    Set(
+                        index,
+                        NO_LBS,
+                        NO_REPS,
+                        it,
+                        routineWithExercises.routine.routineId,
+                        exerciseGettingSet.exerciseId
+                    )
+                },
                 false
             )
         )
@@ -161,7 +164,7 @@ class WorkoutAdapter(private val routineWithExercises: RoutineWithExercises) :
         }
 
         if (position != 0) {
-            if (adapterContents[position - 1].type == WorkoutRowType.EXERCISE || adapterContents[position -1].isCompleted) {
+            if (adapterContents[position - 1].type == WorkoutRowType.EXERCISE || adapterContents[position - 1].isCompleted) {
                 holder.itemView.finishedButton.isEnabled = true
             } else {
                 holder.itemView.finishedButton.isEnabled = false
@@ -208,12 +211,8 @@ class WorkoutAdapter(private val routineWithExercises: RoutineWithExercises) :
         return sets
     }
 
-    fun setWorkout(workout: Workout) {
-        this.workout = workout
-    }
-
-    fun getWorkout(): Workout? {
-        return this.workout
+    fun setWorkoutId(workoutId: Int) {
+        this.workoutId = workoutId
     }
 
     inner class MyEditTextListener(private var editTextType: EditTextType) : TextWatcher {
