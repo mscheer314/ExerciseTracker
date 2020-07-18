@@ -8,12 +8,12 @@
     <fragment
         android:id="@+id/navigation_exercises"
         android:name="com.example.android.exercisetracker.fragments.ExerciseFragment"
-        android:label="fragment_exercise"
+        android:label="Exercises"
         tools:layout="@layout/fragment_exercise" />
     <fragment
         android:id="@+id/navigation_start_workout"
         android:name="com.example.android.exercisetracker.fragments.StartWorkoutFragment"
-        android:label="fragment_start_workout"
+        android:label="Start Workout"
         tools:layout="@layout/fragment_start_workout">
         <action
             android:id="@+id/action_navigation_start_workout_to_navigation_add_routine"
@@ -22,11 +22,11 @@
     <fragment
         android:id="@+id/navigation_add_routine"
         android:name="com.example.android.exercisetracker.fragments.AddRoutineFragment"
-        android:label="fragment_add_routine"
+        android:label="Add Routine"
         tools:layout="@layout/fragment_add_routine" />
     <fragment
         android:id="@+id/navigation_history"
         android:name="com.example.android.exercisetracker.fragments.HistoryFragment"
-        android:label="fragment_history"
+        android:label="History"
         tools:layout="@layout/fragment_history" />
 </navigation>

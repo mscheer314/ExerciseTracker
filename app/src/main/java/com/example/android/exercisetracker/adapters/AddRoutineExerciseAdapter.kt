@@ -25,7 +25,6 @@ class AddRoutineExerciseAdapter internal constructor(context: Context) :
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val exerciseTitle: TextView = itemView.findViewById(R.id.exercise_title)
-        //val exerciseArea: TextView = itemView.findViewById(R.id.exercise_area)
 
         fun getItemDetails(): ItemDetailsLookup.ItemDetails<Long> =
             object : ItemDetailsLookup.ItemDetails<Long>() {
@@ -34,7 +33,7 @@ class AddRoutineExerciseAdapter internal constructor(context: Context) :
             }
 
         fun bind(value: Exercise, isActivated: Boolean = false) {
-            exerciseTitle.text = value.toString()
+            exerciseTitle.text = value.exerciseName
             itemView.isActivated = isActivated
         }
     }
@@ -51,7 +50,6 @@ class AddRoutineExerciseAdapter internal constructor(context: Context) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val current = exercises[position]
         holder.exerciseTitle.text = current.exerciseName
-        // holder.exerciseArea.text = current.exerciseBodyType
 
         tracker?.let {
             holder.bind(

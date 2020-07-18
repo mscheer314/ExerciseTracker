@@ -23,13 +23,10 @@ class HistoryAdapter internal constructor(context: Context) :
         return ViewHolder(itemView)
     }
 
-    override fun getItemCount(): Int {
-        TODO("Not yet implemented")
-    }
+    override fun getItemCount() = sets.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val current = sets[position]
-      //  holder.workoutDate.text = current.
     }
 
     fun setSets(sets: List<Set>) {
