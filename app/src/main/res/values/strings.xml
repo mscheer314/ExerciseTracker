@@ -15,4 +15,5 @@
     <string name="lbs">lbs</string>
     <string name="reps">reps</string>
     <string name="history_exercises">%text</string>
+    <string name="instructions">Select a routine to start.</string>
 </resources>
