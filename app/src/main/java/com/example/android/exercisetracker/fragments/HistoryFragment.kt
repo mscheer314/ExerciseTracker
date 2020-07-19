@@ -13,8 +13,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.android.exercisetracker.R
 import com.example.android.exercisetracker.adapters.HistoryAdapter
 import com.example.android.exercisetracker.viewmodels.SetViewModel
+import com.example.android.exercisetracker.viewmodels.WorkoutViewModel
 
 class HistoryFragment : Fragment() {
+    private lateinit var workoutViewModel: WorkoutViewModel
     private lateinit var setViewModel: SetViewModel
 
     companion object {
@@ -36,6 +38,12 @@ class HistoryFragment : Fragment() {
 
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.adapter = adapter
+
+        workoutViewModel = ViewModelProvider(this).get(WorkoutViewModel::class.java)
+        workoutViewModel.allWorkouts.observe(viewLifecycleOwner, Observer { workouts ->
+            workouts?.let { adapter.setWorkouts(it) }
+        })
+
         setViewModel = ViewModelProvider(this).get(SetViewModel::class.java)
         setViewModel.allSets.observe(viewLifecycleOwner, Observer { sets ->
             sets?.let { adapter.setSets(it) }

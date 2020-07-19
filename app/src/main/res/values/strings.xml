@@ -1,9 +1,6 @@
 <resources>
     <string name="app_name">ExerciseTracker</string>
     <string name="exercises">Exercises</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="history">History</string>
     <string name="start_workout">Start Workout</string>
     <string name="add_exercise">Add Exercise</string>
@@ -17,4 +14,5 @@
     <string name="finish">Finish</string>
     <string name="lbs">lbs</string>
     <string name="reps">reps</string>
+    <string name="history_exercises">%text</string>
 </resources>

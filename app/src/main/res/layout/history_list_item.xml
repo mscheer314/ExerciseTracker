@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/history_card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -10,11 +11,12 @@
     app:contentPadding="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/history_row_item"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/date"
+            android:id="@+id/history_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Workout-Date"
@@ -22,12 +24,22 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/history_exercise_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Exercise"
-            app:layout_constraintTop_toBottomOf="@+id/date" />
+            android:layout_marginTop="24dp"
+            android:text="TextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/history_date" />
+
+        <TextView
+            android:id="@+id/history_set_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:text="TextView"
+            app:layout_constraintStart_toEndOf="@+id/history_exercise_name"
+            app:layout_constraintTop_toTopOf="@+id/history_exercise_name" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

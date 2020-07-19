@@ -27,7 +27,7 @@ class WorkoutAdapter(private val routineWithExercises: RoutineWithExercises) :
             adapterContents.add(WorkoutRowItem(WorkoutRowType.EXERCISE, exercise, null, false))
             if (this::routineWithSets.isInitialized) {
                 routineWithSets.sets.forEach { set ->
-                    if (set.exerciseId == exercise.exerciseId) {
+                    if (set.exercise.exerciseId == exercise.exerciseId) {
                         adapterContents.add(WorkoutRowItem(WorkoutRowType.SET, null, set, false))
                     }
                 }
@@ -40,11 +40,10 @@ class WorkoutAdapter(private val routineWithExercises: RoutineWithExercises) :
                             Set(
                                 AUTO_INCREMENTED, NO_LBS, NO_REPS,
                                 it,
-                                routineWithExercises.routine.routineId, exercise.exerciseId
+                                routineWithExercises.routine.routineId, exercise
                             )
                         }
-                        ,
-                        false
+                        ,false
                     )
                 )
             }
@@ -127,12 +126,13 @@ class WorkoutAdapter(private val routineWithExercises: RoutineWithExercises) :
                 exerciseGettingSet,
                 workoutId?.let {
                     Set(
-                        index,
+                        //index,
+                        AUTO_INCREMENTED,
                         NO_LBS,
                         NO_REPS,
                         it,
                         routineWithExercises.routine.routineId,
-                        exerciseGettingSet.exerciseId
+                        exerciseGettingSet
                     )
                 },
                 false
@@ -170,9 +170,6 @@ class WorkoutAdapter(private val routineWithExercises: RoutineWithExercises) :
                 holder.itemView.finishedButton.isEnabled = false
             }
         }
-
-        //   holder.itemView.finishedButton.isEnabled = adapterContents[position - 1].isCompleted ||
-        //           adapterContents[position - 1].type == WorkoutRowType.EXERCISE
 
         holder.itemView.finishedButton.setOnClickListener {
             workoutRow.isCompleted = true

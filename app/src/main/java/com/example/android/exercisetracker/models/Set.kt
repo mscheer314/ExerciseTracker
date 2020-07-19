@@ -1,5 +1,6 @@
 package com.example.android.exercisetracker.models
 
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.ForeignKey.CASCADE
@@ -20,6 +21,8 @@ data class Set(
     var reps: Int,
     val workoutId: Int,
     val routineId: Int,
-    val exerciseId: Int
-)
+    @Embedded
+    val exercise: Exercise
+) {
+}
 
