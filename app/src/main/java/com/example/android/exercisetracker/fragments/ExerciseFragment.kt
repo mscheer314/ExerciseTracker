@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -52,6 +53,18 @@ class ExerciseFragment : Fragment() {
             val dialogFragment = AddExerciseDialog()
             fragmentManager?.let { it1 -> dialogFragment.show(it1, "AddExerciseDialog") }
         }
+
+        val exerciseSearch = view.findViewById<SearchView>(R.id.exercise_search)
+        exerciseSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                adapter.filter.filter(newText)
+                return false
+            }
+        })
 
         return view
     }
