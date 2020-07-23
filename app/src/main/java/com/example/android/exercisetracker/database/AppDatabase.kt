@@ -12,6 +12,7 @@ import com.example.android.exercisetracker.daos.WorkoutDao
 import com.example.android.exercisetracker.models.*
 import com.example.android.exercisetracker.models.Set
 import com.example.android.exercisetracker.utils.Converters
+import java.io.File
 
 @Database(
     entities = [Routine::class, Exercise::class, RoutineExerciseCrossRef::class, Set::class, Workout::class],
@@ -42,8 +43,10 @@ abstract class AppDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "app_database"
-                ).build()
+                    "app_database.db"
+                )
+                    .createFromAsset("app_database.db")
+                    .build()
                 INSTANCE = instance
                 return instance
             }

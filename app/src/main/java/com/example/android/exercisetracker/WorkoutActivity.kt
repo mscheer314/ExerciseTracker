@@ -53,7 +53,6 @@ class WorkoutActivity : AppCompatActivity() {
         finishedButton.setOnClickListener {
             val setViewModel = ViewModelProvider(this).get(SetViewModel::class.java)
             val sets = adapter.getWorkoutSets()
-            // TODO why is this not inserting multiple sets with the same exercise, lbs, and reps?
             sets.forEach { set ->
                 setViewModel.insert(set)
             }

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -48,6 +49,7 @@ class HistoryFragment : Fragment() {
         setViewModel.allSets.observe(viewLifecycleOwner, Observer { sets ->
             sets?.let { adapter.setSets(it) }
         })
+
         return view
     }
 }
