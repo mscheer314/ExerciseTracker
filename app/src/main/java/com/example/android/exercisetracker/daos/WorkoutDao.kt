@@ -1,10 +1,7 @@
 package com.example.android.exercisetracker.daos
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.example.android.exercisetracker.models.Workout
 
 @Dao
@@ -14,4 +11,7 @@ interface WorkoutDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(workout: Workout): Long
+
+    @Delete
+    suspend fun delete(workout: Workout)
 }

@@ -43,7 +43,7 @@ class WorkoutAdapter(private val routineWithExercises: RoutineWithExercises) :
                                 routineWithExercises.routine.routineId, exercise
                             )
                         }
-                        ,false
+                        , false
                     )
                 )
             }

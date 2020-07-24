@@ -21,11 +21,16 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
 
     suspend fun insert(workout: Workout): Int {
         var idReturn = 0
-        //viewModelScope.async(Dispatchers.IO) {
         withContext(Dispatchers.IO) {
             val id = async { repository.insert(workout) }
             idReturn = id.await()?.toInt()!!
         }
         return idReturn
+    }
+
+    suspend fun delete(workout: Workout) {
+        withContext(Dispatchers.IO) {
+            repository.delete(workout)
+        }
     }
 }

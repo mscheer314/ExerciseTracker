@@ -5,15 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.exercisetracker.R
 import com.example.android.exercisetracker.models.Exercise
 import com.example.android.exercisetracker.models.Set
 import com.example.android.exercisetracker.models.Workout
+import com.example.android.exercisetracker.viewmodels.WorkoutViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-class HistoryAdapter internal constructor(context: Context) :
+class HistoryAdapter internal constructor(context: Context, workoutViewModel: WorkoutViewModel) :
     RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
     private val inflater: LayoutInflater = LayoutInflater.from(context)
+    private val workoutViewModel: WorkoutViewModel = workoutViewModel
     private var workouts: List<Workout> = emptyList()
     private var sets: List<Set> = emptyList()
 
@@ -47,11 +52,7 @@ class HistoryAdapter internal constructor(context: Context) :
             }
         }
         exerciseList.forEach {
-            if (it != null) {
-                exerciseText = exerciseText + it?.exerciseName
-            } else {
-                exerciseText += "\n"
-            }
+            exerciseText += it?.exerciseName ?: "\n"
         }
         holder.workoutExercises.text = exerciseText
 
@@ -76,7 +77,7 @@ class HistoryAdapter internal constructor(context: Context) :
         // get the workoutIds of the sets list
         val workoutIds = mutableListOf<Int>()
         for (set in sets) {
-            if(!workoutIds.contains(set.workoutId)) {
+            if (!workoutIds.contains(set.workoutId)) {
                 workoutIds.add(set.workoutId)
             }
         }
@@ -113,5 +114,11 @@ class HistoryAdapter internal constructor(context: Context) :
 
     fun setSets(sets: List<Set>) {
         this.sets = sets
+    }
+
+    suspend fun delete(position: Int) {
+        withContext(Dispatchers.IO) {
+            workoutViewModel.delete(workouts[position])
+        }
     }
 }

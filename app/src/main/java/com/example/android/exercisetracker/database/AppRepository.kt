@@ -62,4 +62,8 @@ class AppRepository(application: Application) : CoroutineScope {
         return routineDao?.getRoutineWithSets(id)
     }
 
+    suspend fun delete(workout: Workout) {
+        workoutDao?.delete(workout)
+    }
+
 }
