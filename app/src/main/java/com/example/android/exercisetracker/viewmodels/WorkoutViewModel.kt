@@ -33,4 +33,10 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
             repository.delete(workout)
         }
     }
+
+    suspend fun deleteById(id : Int) {
+        withContext(Dispatchers.IO) {
+            repository.deleteById(id)
+        }
+    }
 }

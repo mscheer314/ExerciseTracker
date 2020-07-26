@@ -27,8 +27,10 @@ class AddExerciseDialog : DialogFragment() {
         exerciseNameEditText = view.findViewById(R.id.exerciseAddTitle)
         builder.setPositiveButton("OK", object : DialogInterface.OnClickListener {
             override fun onClick(dialog: DialogInterface, which: Int) {
-                val exercise = Exercise(0, exerciseNameEditText.text.toString())
-                exerciseViewModel.insert(exercise)
+                if (isAlpha(exerciseNameEditText.text.toString())) {
+                    val exercise = Exercise(0, exerciseNameEditText.text.toString())
+                    exerciseViewModel.insert(exercise)
+                }
                 dismiss()
             }
         })
@@ -38,5 +40,10 @@ class AddExerciseDialog : DialogFragment() {
             }
         })
         return builder.create()
+    }
+
+    private fun isAlpha(input: String): Boolean {
+        val pattern = "[a-zA-Z]+".toRegex()
+        return input.matches(pattern)
     }
 }

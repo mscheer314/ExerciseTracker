@@ -66,4 +66,8 @@ class AppRepository(application: Application) : CoroutineScope {
         workoutDao?.delete(workout)
     }
 
+    suspend fun deleteById(id: Int) {
+        workoutDao?.deleteById(id)
+    }
+
 }

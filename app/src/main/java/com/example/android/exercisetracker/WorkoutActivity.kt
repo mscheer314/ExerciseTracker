@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.android.exercisetracker.adapters.WorkoutAdapter
 import com.example.android.exercisetracker.models.RoutineWithExercises
+import com.example.android.exercisetracker.models.Set
 import com.example.android.exercisetracker.models.Workout
 import com.example.android.exercisetracker.viewmodels.RoutineViewModel
 import com.example.android.exercisetracker.viewmodels.SetViewModel
@@ -20,6 +21,7 @@ import org.threeten.bp.LocalDate
 class WorkoutActivity : AppCompatActivity() {
     private lateinit var routineViewModel: RoutineViewModel
     private lateinit var workoutViewModel: WorkoutViewModel
+    private lateinit var adapter: WorkoutAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,15 +51,43 @@ class WorkoutActivity : AppCompatActivity() {
             adapter.assignTypesToRowItems()
         }
 
+        setUpFinishedButton(adapter)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if (this::adapter.isInitialized)
+            deleteEmptyWorkout(adapter)
+    }
+
+    private fun setUpFinishedButton(adapter: WorkoutAdapter) {
         val finishedButton = findViewById<Button>(R.id.finishedButton)
         finishedButton.setOnClickListener {
             val setViewModel = ViewModelProvider(this).get(SetViewModel::class.java)
             val sets = adapter.getWorkoutSets()
-            sets.forEach { set ->
-                setViewModel.insert(set)
+
+            if (sets.isEmpty()) {
+                deleteEmptyWorkout(adapter)
+            } else {
+                insertSets(sets, setViewModel)
             }
             val intent = Intent(this, PrepWorkoutActivity::class.java)
             startActivity(intent)
+        }
+    }
+
+    private fun deleteEmptyWorkout(adapter: WorkoutAdapter) {
+        runBlocking {
+            adapter.getWorkoutId()?.let { it1 -> workoutViewModel.deleteById(it1) }
+        }
+    }
+
+    private fun insertSets(
+        sets: List<Set>,
+        setViewModel: SetViewModel
+    ) {
+        sets.forEach { set ->
+            setViewModel.insert(set)
         }
     }
 }

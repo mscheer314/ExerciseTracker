@@ -201,7 +201,7 @@ class WorkoutAdapter(private val routineWithExercises: RoutineWithExercises) :
     fun getWorkoutSets(): List<Set> {
         val sets: MutableList<Set> = mutableListOf()
         adapterContents.forEach { workoutRowItem ->
-            if (workoutRowItem.type == WorkoutRowType.SET) {
+            if (workoutRowItem.type == WorkoutRowType.SET && workoutRowItem.isCompleted) {
                 workoutRowItem.set?.let { sets.add(it) }
             }
         }
@@ -210,6 +210,10 @@ class WorkoutAdapter(private val routineWithExercises: RoutineWithExercises) :
 
     fun setWorkoutId(workoutId: Int) {
         this.workoutId = workoutId
+    }
+
+    fun getWorkoutId() : Int? {
+        return workoutId
     }
 
     inner class MyEditTextListener(private var editTextType: EditTextType) : TextWatcher {
