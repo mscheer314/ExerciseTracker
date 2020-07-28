@@ -1,6 +1,8 @@
 package com.example.android.exercisetracker
 
 import org.junit.Test
+import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.verify
 
 import org.junit.Assert.*
 
@@ -9,9 +11,16 @@ import org.junit.Assert.*
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
-class ExampleUnitTest {
+class LoginTests {
     @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+    fun loginWithEmptyCredentials_callsShowCredentialsRequiredMessage() {
+        val presenter = LoginPresenter()
+
+        val view: LoginPresenter.View = mock()
+        presenter.attachView(view)
+
+        presenter.login("", "")
+
+        verify(view).showCredentialsRequiredMessage()
     }
 }
