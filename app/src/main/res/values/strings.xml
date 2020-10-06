@@ -12,8 +12,8 @@
     <string name="save">Save</string>
     <string name="routine_title">Routine Title</string>
     <string name="finish">Finish</string>
-    <string name="lbs">lbs</string>
-    <string name="reps">reps</string>
+    <string name="lbs">Lbs</string>
+    <string name="reps">Reps</string>
     <string name="history_exercises">%text</string>
     <string name="instructions">Select a routine to start.</string>
     <string name="title_activity_login">LoginActivity</string>
