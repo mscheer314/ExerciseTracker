@@ -63,7 +63,7 @@ class AddRoutineFragment : Fragment(), CoroutineScope {
     }
 
     private fun setUpHideKeyboardWhenNotTyping(routineTitleEditText: EditText) {
-        routineTitleEditText.setOnFocusChangeListener { v, _ ->
+        routineTitleEditText.setOnFocusChangeListener { _, _ ->
             context?.let { view?.let { it1 -> Keyboard.hideSoftKeyBoard(it, it1) } }
         }
     }

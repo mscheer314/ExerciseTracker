@@ -3,9 +3,7 @@ package com.example.android.exercisetracker.utils
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.exercisetracker.adapters.HistoryAdapter
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 
 
 open class SwipeToDeleteCallback : ItemTouchHelper.SimpleCallback {
@@ -33,7 +31,6 @@ open class SwipeToDeleteCallback : ItemTouchHelper.SimpleCallback {
         when (type) {
 
             1 -> runBlocking { historyAdapter?.delete(position) }
-
         }
     }
 }

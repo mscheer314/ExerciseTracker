@@ -2,7 +2,6 @@ package com.example.android.exercisetracker.fragments
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.EditText
@@ -25,20 +24,18 @@ class AddExerciseDialog : DialogFragment() {
         builder.setView(view)
         builder.setTitle("Add Exercise")
         exerciseNameEditText = view.findViewById(R.id.exerciseAddTitle)
-        builder.setPositiveButton("OK", object : DialogInterface.OnClickListener {
-            override fun onClick(dialog: DialogInterface, which: Int) {
-                if (isAlpha(exerciseNameEditText.text.toString())) {
-                    val exercise = Exercise(0, exerciseNameEditText.text.toString())
-                    exerciseViewModel.insert(exercise)
-                }
-                dismiss()
+        builder.setPositiveButton(
+            "OK"
+        ) { _, _ ->
+            if (isAlpha(exerciseNameEditText.text.toString())) {
+                val exercise = Exercise(0, exerciseNameEditText.text.toString())
+                exerciseViewModel.insert(exercise)
             }
-        })
-        builder.setNegativeButton("CANCEL", object : DialogInterface.OnClickListener {
-            override fun onClick(dialog: DialogInterface?, which: Int) {
-                dismiss()
-            }
-        })
+            dismiss()
+        }
+        builder.setNegativeButton(
+            "CANCEL"
+        ) { _, _ -> dismiss() }
         return builder.create()
     }
 

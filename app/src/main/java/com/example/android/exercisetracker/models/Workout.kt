@@ -14,5 +14,4 @@ data class Workout(
     @PrimaryKey(autoGenerate = true)
     val workoutId: Int,
     val date: LocalDate
-) : Parcelable {
-}
+) : Parcelable

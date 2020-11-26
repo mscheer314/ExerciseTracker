@@ -8,7 +8,6 @@ import com.example.android.exercisetracker.database.AppRepository
 import com.example.android.exercisetracker.models.Set
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class SetViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: AppRepository = AppRepository(application)

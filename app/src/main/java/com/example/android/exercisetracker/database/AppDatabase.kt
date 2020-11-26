@@ -12,7 +12,6 @@ import com.example.android.exercisetracker.daos.WorkoutDao
 import com.example.android.exercisetracker.models.*
 import com.example.android.exercisetracker.models.Set
 import com.example.android.exercisetracker.utils.Converters
-import java.io.File
 
 @Database(
     entities = [Routine::class, Exercise::class, RoutineExerciseCrossRef::class, Set::class, Workout::class],

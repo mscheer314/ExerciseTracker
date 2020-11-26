@@ -3,7 +3,6 @@ package com.example.android.exercisetracker.viewmodels
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.viewModelScope
 import com.example.android.exercisetracker.database.AppRepository
 import com.example.android.exercisetracker.models.Workout
 import kotlinx.coroutines.Dispatchers
@@ -34,7 +33,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    suspend fun deleteById(id : Int) {
+    suspend fun deleteById(id: Int) {
         withContext(Dispatchers.IO) {
             repository.deleteById(id)
         }

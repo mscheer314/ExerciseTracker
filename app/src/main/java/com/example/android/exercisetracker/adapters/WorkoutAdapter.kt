@@ -43,8 +43,7 @@ class WorkoutAdapter(private val routineWithExercises: RoutineWithExercises) :
                                 it,
                                 routineWithExercises.routine.routineId, exercise
                             )
-                        }
-                        , false
+                        }, false
                     )
                 )
             }
@@ -249,7 +248,7 @@ class WorkoutAdapter(private val routineWithExercises: RoutineWithExercises) :
         this.workoutId = workoutId
     }
 
-    fun getWorkoutId() : Int? {
+    fun getWorkoutId(): Int? {
         return workoutId
     }
 

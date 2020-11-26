@@ -15,7 +15,9 @@ class ExerciseViewModel(application: Application) : AndroidViewModel(application
     val allExercises: LiveData<List<Exercise>>
 
     init {
-        val exerciseDao = AppDatabase.getDatabase(application).exerciseDao()
+       // TOOD test to see if removing exerciseDao breaks anything
+
+       // val exerciseDao = AppDatabase.getDatabase(application).exerciseDao()
         repository = AppRepository(application)
         allExercises = repository.allExercises
     }
@@ -23,7 +25,9 @@ class ExerciseViewModel(application: Application) : AndroidViewModel(application
     fun insert(exercise: Exercise) =
         viewModelScope.launch(Dispatchers.IO) { repository.insert(exercise) }
 
-    fun getExerciseById(id: Int): LiveData<Exercise>? {
-        return repository.getExerciseById(id)
-    }
+// TODO test to see if removing this function breaks anything
+
+ //  fun getExerciseById(id: Int): LiveData<Exercise>? {
+ //      return repository.getExerciseById(id)
+ //  }
 }

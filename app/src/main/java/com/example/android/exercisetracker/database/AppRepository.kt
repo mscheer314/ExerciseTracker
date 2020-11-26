@@ -50,13 +50,15 @@ class AppRepository(application: Application) : CoroutineScope {
         setDao?.insert(set)
     }
 
-    suspend fun insert(workout: Workout) : Long? {
-       return  workoutDao?.insert(workout)
+    suspend fun insert(workout: Workout): Long? {
+        return workoutDao?.insert(workout)
     }
 
-    fun getExerciseById(id: Int): LiveData<Exercise>? {
-        return exerciseDao?.getExerciseById(id)
-    }
+  // TODO test to see if removing getExerciseById breaks anything
+
+  //  fun getExerciseById(id: Int): LiveData<Exercise>? {
+  //      return exerciseDao?.getExerciseById(id)
+  //  }
 
     fun getRoutineWithSetsById(id: Int): LiveData<RoutineWithSets>? {
         return routineDao?.getRoutineWithSets(id)

@@ -12,7 +12,6 @@ import com.example.android.exercisetracker.WorkoutActivity
 import com.example.android.exercisetracker.models.Exercise
 import com.example.android.exercisetracker.models.RoutineWithExercises
 import com.example.android.exercisetracker.models.Workout
-import com.example.android.exercisetracker.viewmodels.WorkoutViewModel
 
 class RoutineAdapter internal constructor(private val context: Context) :
     RecyclerView.Adapter<RoutineAdapter.ViewHolder>() {
@@ -63,7 +62,7 @@ class RoutineAdapter internal constructor(private val context: Context) :
         notifyDataSetChanged()
     }
 
-    fun setWorkout(workout: Workout){
+    fun setWorkout(workout: Workout) {
         this.workout = workout
     }
 

@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -21,12 +20,6 @@ import com.example.android.exercisetracker.viewmodels.WorkoutViewModel
 class HistoryFragment : Fragment() {
     private lateinit var workoutViewModel: WorkoutViewModel
     private lateinit var setViewModel: SetViewModel
-
-    companion object {
-        fun newInstance(): HistoryFragment {
-            return HistoryFragment()
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

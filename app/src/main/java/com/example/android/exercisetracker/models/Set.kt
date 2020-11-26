@@ -23,6 +23,5 @@ data class Set(
     val routineId: Int,
     @Embedded
     val exercise: Exercise
-) {
-}
+)
 

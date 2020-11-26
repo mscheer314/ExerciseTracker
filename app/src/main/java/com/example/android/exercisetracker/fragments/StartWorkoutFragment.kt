@@ -16,7 +16,6 @@ import com.example.android.exercisetracker.R
 import com.example.android.exercisetracker.adapters.RoutineAdapter
 import com.example.android.exercisetracker.models.Workout
 import com.example.android.exercisetracker.viewmodels.RoutineViewModel
-import com.example.android.exercisetracker.viewmodels.WorkoutViewModel
 import org.threeten.bp.LocalDate
 
 class StartWorkoutFragment : Fragment() {
